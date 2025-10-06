@@ -1,0 +1,63 @@
+# Core FastAPI Dependencies
+fastapi>=0.110.1
+uvicorn>=0.25.0
+python-multipart>=0.0.9
+aiofiles>=0.7.0
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+python-dotenv>=1.0.1
+orjson>=3.8.0
+pydantic>=2.6.4
+email-validator>=2.2.0
+
+# Security & Authentication
+pyjwt>=2.10.1
+passlib>=1.7.4
+tzdata>=2024.2
+
+# Database & Storage
+motor>=3.3.1
+pymongo>=4.5.0
+aioredis>=2.0.1
+redis>=4.5.0
+
+# Data Processing
+pandas>=2.2.0
+numpy>=1.26.0
+PyPDF2>=2.0.0
+python-docx>=0.8.11
+openpyxl>=3.0.7
+python-magic>=0.4.27
+
+# Monitoring & Metrics
+prometheus-fastapi-instrumentator>=5.7.1
+psutil>=5.8.0
+prometheus-client>=0.11.0
+
+# Rate Limiting
+slowapi>=0.1.4
+limits>=2.8.0
+
+# File System Monitoring
+watchdog>=3.0.0
+
+# HTTP Client
+httpx>=0.23.3
+requests>=2.31.0
+
+# Development & Testing
+pytest>=8.0.0
+pytest-asyncio>=0.21.0
+black>=24.1.1
+isort>=5.13.2
+flake8>=7.0.0
+mypy>=1.8.0
+
+# Documentation
+mkdocs>=1.4.2
+mkdocs-material>=9.1.0
+
+# Additional Utilities
+jq>=1.6.0
+typer>=0.9.0
+jinja2>=3.0.1

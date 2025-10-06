@@ -1,0 +1,24 @@
+# Firebase Functions Requirements
+functions-framework==3.*
+fastapi==0.110.1
+uvicorn==0.25.0
+python-multipart==0.0.9
+aiofiles==0.7.0
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-dotenv==1.0.1
+orjson==3.8.0
+pydantic==2.6.4
+email-validator==2.2.0
+motor==3.3.1
+pymongo==4.5.0
+aioredis==2.0.1
+redis==4.5.0
+pandas==2.2.0
+numpy==1.26.0
+PyPDF2==2.0.0
+python-docx==0.8.11
+openpyxl==3.0.7
+prometheus-client==0.11.0
+httpx==0.23.3
+requests==2.31.0

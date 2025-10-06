@@ -22,7 +22,7 @@ from pathlib import Path
 
 import aiofiles
 import aiofiles.os
-import aioredis
+import redis.asyncio as aioredis
 import orjson
 from pydantic import ValidationError
 

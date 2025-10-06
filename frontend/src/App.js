@@ -17,11 +17,15 @@ function App() {
   const [context, setContext] = useState({});
   const [files, setFiles] = useState([]);
   const [streaming, setStreaming] = useState(false);
+  const [serverStatus, setServerStatus] = useState(null);
+  const [monitoring, setMonitoring] = useState(null);
 
   useEffect(() => {
     fetchTools();
     fetchContext();
     fetchFiles();
+    fetchServerStatus();
+    fetchMonitoring();
   }, []);
 
   const fetchTools = async () => {
@@ -49,6 +53,24 @@ function App() {
       setFiles(response.data.files || []);
     } catch (e) {
       console.error("Error fetching files:", e);
+    }
+  };
+
+  const fetchServerStatus = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/health`);
+      setServerStatus(response.data);
+    } catch (e) {
+      console.error("Error fetching server status:", e);
+    }
+  };
+
+  const fetchMonitoring = async () => {
+    try {
+      const response = await axios.get(`${MCP_API}/monitoring/health`);
+      setMonitoring(response.data);
+    } catch (e) {
+      console.error("Error fetching monitoring data:", e);
     }
   };
 
@@ -369,6 +391,100 @@ function App() {
     </div>
   );
 
+  const renderMonitoring = () => (
+    <div className="space-y-6">
+      {/* Server Status */}
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Server Status</h2>
+        {serverStatus ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <h3 className="font-semibold text-green-800">Status</h3>
+              </div>
+              <p className="text-green-700 font-bold text-lg">{serverStatus.status}</p>
+            </div>
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3 className="font-semibold text-blue-800">Uptime</h3>
+              </div>
+              <p className="text-blue-700 font-bold text-lg">{Math.round(serverStatus.uptime)}s</p>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 0h10m-9 0a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2M9 4a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                <h3 className="font-semibold text-purple-800">Version</h3>
+              </div>
+              <p className="text-purple-700 font-bold text-lg">{serverStatus.version}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <div className="animate-spin w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading server status...</p>
+          </div>
+        )}
+      </div>
+
+      {/* System Metrics */}
+      {monitoring && (
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">System Metrics</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-xl p-4 border border-red-200">
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <h3 className="font-semibold text-red-800">CPU Usage</h3>
+              </div>
+              <p className="text-red-700 font-bold text-lg">
+                {monitoring.checks?.system?.cpu?.usage_percent?.toFixed(1) || 'N/A'}%
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-4 border border-blue-200">
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                </svg>
+                <h3 className="font-semibold text-blue-800">Memory</h3>
+              </div>
+              <p className="text-blue-700 font-bold text-lg">
+                {monitoring.checks?.system?.memory?.usage_percent?.toFixed(1) || 'N/A'}%
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-green-50 to-teal-50 rounded-xl p-4 border border-green-200">
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                </svg>
+                <h3 className="font-semibold text-green-800">Disk Usage</h3>
+              </div>
+              <p className="text-green-700 font-bold text-lg">
+                {monitoring.checks?.system?.disk?.usage_percent?.toFixed(1) || 'N/A'}%
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                <h3 className="font-semibold text-purple-800">Environment</h3>
+              </div>
+              <p className="text-purple-700 font-bold text-lg">{monitoring.environment || 'N/A'}</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       {/* Header */}
@@ -397,7 +513,8 @@ function App() {
             { id: "mcp-tools", label: "MCP Tools", icon: "🔧" },
             { id: "context", label: "Context", icon: "📝" },
             { id: "files", label: "Files", icon: "📁" },
-            { id: "streaming", label: "Streaming", icon: "📡" }
+            { id: "streaming", label: "Streaming", icon: "📡" },
+            { id: "monitoring", label: "Monitoring", icon: "📊" }
           ].map((tab) => (
             <button
               key={tab.id}
@@ -421,6 +538,7 @@ function App() {
         {activeTab === "context" && renderContextManagement()}
         {activeTab === "files" && renderFileManagement()}
         {activeTab === "streaming" && renderRealTimeStreaming()}
+        {activeTab === "monitoring" && renderMonitoring()}
       </div>
 
       {/* Footer Info */}

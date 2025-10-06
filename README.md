@@ -1,6 +1,6 @@
 # NEW MCP Server - Unified Model Context Protocol Server
 
-A comprehensive, production-ready Model Context Protocol (MCP) server that combines the best features from both the `app` and `MCP SERVER` implementations.
+A comprehensive, production-ready Model Context Protocol (MCP) server that combines the best features from both the `app` and `MCP SERVER` implementations with **enhanced security, monitoring, and Docker support**.
 
 ## 🚀 Features
 
@@ -17,6 +17,7 @@ A comprehensive, production-ready Model Context Protocol (MCP) server that combi
 - **write_file**: Write content to files
 - **list_directory**: List directory contents
 - **search_files**: Search files using glob patterns
+- **🧠 meta_minds_analysis**: AI-powered data analytics with SMART question generation (97%+ quality)
 
 ### Advanced Features
 - **File Versioning**: Complete file version history
@@ -25,6 +26,18 @@ A comprehensive, production-ready Model Context Protocol (MCP) server that combi
 - **Event Notifications**: Real-time context and file change notifications
 - **Security**: CORS protection, rate limiting, input validation
 - **Scalability**: Redis caching, async processing, horizontal scaling
+
+### 🆕 **NEW: Production-Ready Features**
+- **🐳 Docker Support**: Complete containerization with Dockerfile and docker-compose.yml
+- **🔒 Enhanced Security**: Advanced security middleware, CSRF protection, input validation
+- **📊 Advanced Monitoring**: System metrics, performance tracking, alerting
+- **⚙️ Environment Configuration**: Comprehensive .env configuration
+- **🛡️ Security Headers**: XSS protection, CSRF tokens, rate limiting
+- **📈 Prometheus Integration**: Detailed metrics collection and monitoring
+- **🔍 Health Checks**: Kubernetes-ready liveness and readiness probes
+- **📝 Audit Logging**: Complete security and activity logging
+- **🚨 Alert System**: Automated alerts for system issues
+- **🧠 META-MINDS Analytics**: AI-powered data analysis with SMART questions ([GitHub](https://github.com/Jatin23K/META-MINDS))
 
 ## 🏗️ Architecture
 
@@ -35,6 +48,12 @@ NEW MCP/
 │   │   ├── main.py         # Main FastAPI application
 │   │   ├── core/           # Core business logic
 │   │   ├── api/            # API route handlers
+│   │   │   ├── mcp_routes.py      # MCP tools
+│   │   │   └── analytics_routes.py # META-MINDS analytics
+│   │   ├── integrations/   # Third-party integrations
+│   │   │   └── meta_minds.py      # META-MINDS integration
+│   │   ├── workflows/      # Automated workflows
+│   │   │   └── meta_minds_workflow.py
 │   │   ├── models/         # Pydantic models
 │   │   └── templates/      # HTML templates
 │   ├── requirements.txt    # Python dependencies
@@ -57,10 +76,30 @@ NEW MCP/
 ### Prerequisites
 - Python 3.8+
 - Node.js 16+
+- Docker & Docker Compose (recommended)
 - MongoDB (optional)
 - Redis (optional)
 
-### Backend Setup
+### 🐳 **Docker Deployment (Recommended)**
+```bash
+# Clone the repository
+git clone https://github.com/Jatin23K/MCP-Server.git
+cd MCP-Server
+
+# Copy environment configuration
+cp config.env.example .env
+# Edit .env with your settings
+
+# Start all services
+docker-compose up -d
+
+# Check status
+docker-compose ps
+```
+
+### 🛠️ **Manual Setup**
+
+#### Backend Setup
 ```bash
 cd backend
 python -m venv venv
@@ -70,24 +109,28 @@ venv\Scripts\activate
 source venv/bin/activate
 
 pip install -r requirements.txt
-cp env.example .env
+cp config.env.example .env
 # Edit .env with your settings
 
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Frontend Setup
+#### Frontend Setup
 ```bash
 cd frontend
 npm install
 npm start
 ```
 
-### Access Points
+### 🌐 **Access Points**
+- **MCP Interface**: http://localhost:3001/mcp-interface.html (Enhanced Web UI)
 - **API Documentation**: http://localhost:8000/mcp/docs
 - **Frontend Interface**: http://localhost:3000
 - **Health Check**: http://localhost:8000/health
-- **Metrics**: http://localhost:8000/metrics
+- **Metrics**: http://localhost:8000/mcp/api/v1/monitoring/metrics
+- **META-MINDS Analytics**: http://localhost:3001/mcp-interface.html (Analytics Tab)
+- **Prometheus**: http://localhost:9090
+- **Grafana Dashboard**: http://localhost:3000 (Grafana)
 
 ## 📚 API Endpoints
 
@@ -116,8 +159,13 @@ npm start
 - `GET /mcp/api/v1/users/me` - Get current user
 
 ### Monitoring
-- `GET /health` - Health check
-- `GET /metrics` - Prometheus metrics
+- `GET /monitoring/health` - Comprehensive health check
+- `GET /monitoring/health/live` - Kubernetes liveness probe
+- `GET /monitoring/health/ready` - Kubernetes readiness probe
+- `GET /monitoring/metrics` - Prometheus metrics
+- `GET /monitoring/status` - Overall system status
+- `GET /monitoring/alerts` - Current alerts
+- `GET /monitoring/dashboard` - Dashboard data
 
 ## 🔧 Configuration
 
@@ -179,22 +227,90 @@ npm test
 
 ## 🚀 Deployment
 
-### Docker Deployment
+### 🐳 **Docker Deployment (Recommended)**
 ```bash
+# Start all services
 docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Scale services
+docker-compose up -d --scale mcp-server=3
+
+# Stop services
+docker-compose down
 ```
 
-### Firebase Deployment
+### 🔥 **Firebase Deployment**
 ```bash
+# Install Firebase CLI
+npm install -g firebase-tools
+
+# Login to Firebase
+firebase login
+
+# Initialize Firebase project
+firebase init
+
+# Deploy
 firebase deploy
 ```
 
-### Production Deployment
-1. Use production WSGI server (Gunicorn)
-2. Configure reverse proxy (Nginx)
-3. Set up SSL (HTTPS)
-4. Configure monitoring (Prometheus and Grafana)
-5. Set up logging (Centralized logging)
+### 🏭 **Production Deployment**
+
+#### 1. **Docker Production Setup**
+```bash
+# Build production image
+docker build -t mcp-server:latest .
+
+# Run with production settings
+docker run -d \
+  --name mcp-server \
+  -p 8000:8000 \
+  -e ENVIRONMENT=production \
+  -e JWT_SECRET_KEY=your-secret-key \
+  mcp-server:latest
+```
+
+#### 2. **Kubernetes Deployment**
+```yaml
+# k8s-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mcp-server
+  template:
+    metadata:
+      labels:
+        app: mcp-server
+    spec:
+      containers:
+      - name: mcp-server
+        image: mcp-server:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: ENVIRONMENT
+          value: "production"
+```
+
+#### 3. **Production Checklist**
+- ✅ Use production WSGI server (Gunicorn)
+- ✅ Configure reverse proxy (Nginx)
+- ✅ Set up SSL (HTTPS)
+- ✅ Configure monitoring (Prometheus and Grafana)
+- ✅ Set up logging (Centralized logging)
+- ✅ Configure security headers
+- ✅ Set up rate limiting
+- ✅ Configure backup strategy
+- ✅ Set up alerting
+- ✅ Configure auto-scaling
 
 ## 🤝 Contributing
 

@@ -1,0 +1,556 @@
+# 🗂️ MCP Server - Complete Project Structure
+
+## 📋 PROJECT OVERVIEW
+MCP Server is a unified Model Context Protocol implementation with advanced features including META-MINDS AI analytics, real-time streaming, monitoring, and comprehensive automation capabilities.
+
+## 🎯 MAIN FEATURES
+- Model Context Protocol (MCP) implementation
+- META-MINDS AI-powered data analytics
+- Real-time streaming and monitoring
+- File management and versioning
+- Context storage and retrieval
+- Multi-automation platform
+- Docker containerization
+- Firebase deployment support
+
+## 📁 COMPLETE PROJECT STRUCTURE
+
+```
+NEW MCP/
+├── 📁 backend/                                    # 🔧 BACKEND APPLICATION
+│   ├── 📁 app/                                   # Main application code
+│   │   ├── 📁 mcp_tools/                         # 🔧 MCP TOOLS TAB
+│   │   │   ├── __init__.py                       # Package initialization
+│   │   │   ├── routes.py                         # MCP Tools API routes (moved from api/mcp_routes.py)
+│   │   │   ├── 📁 core/                          # Tool execution engine
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── tool_executor.py              # Tool execution logic
+│   │   │   │   ├── tool_registry.py              # Tool discovery and registration
+│   │   │   │   └── parameter_validator.py        # Parameter validation
+│   │   │   └── 📁 utils/                         # Tool utilities
+│   │   │       ├── __init__.py
+│   │   │       ├── result_formatter.py           # Result formatting
+│   │   │       └── tool_helpers.py               # Tool helper functions
+│   │   │
+│   │   ├── 📁 context/                            # 📄 CONTEXT TAB
+│   │   │   ├── __init__.py                       # Package initialization
+│   │   │   ├── routes.py                         # Context API routes (moved from api/context_routes.py)
+│   │   │   ├── 📁 core/                          # Context management
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── context_manager.py            # Context storage and retrieval
+│   │   │   │   ├── context_storage.py            # Context persistence
+│   │   │   │   └── context_retrieval.py          # Context retrieval logic
+│   │   │   └── 📁 utils/                         # Context utilities
+│   │   │       ├── __init__.py
+│   │   │       ├── context_formatter.py          # Context formatting
+│   │   │       └── context_helpers.py            # Context helper functions
+│   │   │
+│   │   ├── 📁 files/                             # 📁 FILES TAB
+│   │   │   ├── __init__.py                       # Package initialization
+│   │   │   ├── routes.py                         # File API routes (moved from api/file_routes.py)
+│   │   │   ├── 📁 core/                          # File management
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── file_manager.py               # File upload/download/management
+│   │   │   │   ├── file_uploader.py              # File upload logic
+│   │   │   │   ├── file_downloader.py            # File download logic
+│   │   │   │   └── file_versioning.py            # File versioning system
+│   │   │   └── 📁 utils/                         # File utilities
+│   │   │       ├── __init__.py
+│   │   │       ├── file_validator.py             # File validation
+│   │   │       └── file_helpers.py               # File helper functions
+│   │   │
+│   │   ├── 📁 streaming/                         # 📡 STREAMING TAB
+│   │   │   ├── __init__.py                       # Package initialization
+│   │   │   ├── routes.py                         # Streaming API routes (moved from api/stream_routes.py)
+│   │   │   ├── 📁 core/                          # SSE engine
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── sse_engine.py                 # Server-Sent Events engine
+│   │   │   │   ├── stream_manager.py             # Stream management
+│   │   │   │   └── event_broadcaster.py          # Event broadcasting
+│   │   │   └── 📁 utils/                         # Streaming utilities
+│   │   │       ├── __init__.py
+│   │   │       ├── stream_formatter.py           # Stream formatting
+│   │   │       └── stream_helpers.py             # Stream helper functions
+│   │   │
+│   │   ├── 📁 monitoring/                        # 📊 MONITORING TAB
+│   │   │   ├── __init__.py                       # Package initialization
+│   │   │   ├── routes.py                         # Monitoring API routes (moved from api/monitoring_routes.py)
+│   │   │   ├── 📁 core/                          # Monitoring engine
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── health_checker.py             # Health check system
+│   │   │   │   ├── metrics_collector.py          # Metrics collection
+│   │   │   │   └── system_monitor.py             # System monitoring
+│   │   │   └── 📁 utils/                         # Monitoring utilities
+│   │   │       ├── __init__.py
+│   │   │       ├── metrics_formatter.py          # Metrics formatting
+│   │   │       └── monitoring_helpers.py         # Monitoring helper functions
+│   │   │
+│   │   ├── 📁 help/                              # ❓ HELP TAB
+│   │   │   ├── __init__.py                       # Package initialization
+│   │   │   ├── routes.py                         # Help API routes
+│   │   │   ├── 📁 core/                          # Help system
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── guide_manager.py              # Guide management
+│   │   │   │   ├── documentation_generator.py    # Documentation generation
+│   │   │   │   └── tutorial_system.py            # Tutorial system
+│   │   │   └── 📁 utils/                         # Help utilities
+│   │   │       ├── __init__.py
+│   │   │       ├── help_formatter.py             # Help formatting
+│   │   │       └── help_helpers.py               # Help helper functions
+│   │   │
+│   │   ├── 📁 automations/                       # 🤖 AUTOMATIONS TAB
+│   │   │   ├── __init__.py                       # Package initialization
+│   │   │   ├── 📁 meta_minds/                    # 🧠 META-MINDS AUTOMATION
+│   │   │   │   ├── __init__.py                   # Package initialization
+│   │   │   │   ├── 📁 core/                      # META-MINDS core engine
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   └── engine.py                  # META-MINDS core engine (moved from integrations/meta_minds.py)
+│   │   │   │   ├── 📁 workflows/                 # META-MINDS workflows
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   └── automation.py             # META-MINDS workflows (moved from workflows/meta_minds_workflow.py)
+│   │   │   │   ├── 📁 api/                       # META-MINDS API routes
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   └── routes.py                 # Analytics API routes (moved from api/analytics_routes.py)
+│   │   │   │   └── 📁 config/                    # META-MINDS configuration
+│   │   │   │       ├── __init__.py
+│   │   │   │       └── settings.py               # META-MINDS settings
+│   │   │   │
+│   │   │   ├── 📁 document_processing/            # 📄 DOCUMENT PROCESSING
+│   │   │   │   ├── __init__.py                   # Package initialization
+│   │   │   │   ├── 📁 core/                      # Document processing engines
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── pdf_processor.py          # PDF text extraction
+│   │   │   │   │   ├── word_processor.py          # Word document processing
+│   │   │   │   │   ├── ocr_engine.py             # Image OCR processing
+│   │   │   │   │   └── format_converter.py       # Format conversion
+│   │   │   │   ├── 📁 workflows/                 # Document automation workflows
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── batch_processor.py        # Batch document processing
+│   │   │   │   │   └── invoice_processor.py      # Invoice processing workflow
+│   │   │   │   ├── 📁 api/                       # Document API routes
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   └── routes.py                 # Document processing API
+│   │   │   │   └── 📁 config/                    # Document processing configuration
+│   │   │   │       ├── __init__.py
+│   │   │   │       └── settings.py               # Document processing settings
+│   │   │   │
+│   │   │   ├── 📁 workflow_builder/               # ⚡ WORKFLOW BUILDER
+│   │   │   │   ├── __init__.py                   # Package initialization
+│   │   │   │   ├── 📁 core/                      # Visual designer engine
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── visual_designer.py        # Drag-and-drop workflow designer
+│   │   │   │   │   ├── workflow_engine.py        # Workflow execution engine
+│   │   │   │   │   └── conditional_logic.py      # Conditional logic processor
+│   │   │   │   ├── 📁 workflows/                  # Workflow automation
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── scheduler.py              # Workflow scheduling
+│   │   │   │   │   └── executor.py               # Workflow execution
+│   │   │   │   ├── 📁 api/                        # Workflow API routes
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   └── routes.py                 # Workflow builder API
+│   │   │   │   └── 📁 config/                    # Workflow builder configuration
+│   │   │   │       ├── __init__.py
+│   │   │   │       └── settings.py               # Workflow builder settings
+│   │   │   │
+│   │   │   ├── 📁 data_integration/              # 🔄 DATA INTEGRATION
+│   │   │   │   ├── __init__.py                   # Package initialization
+│   │   │   │   ├── 📁 core/                      # API & DB connectors
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── api_connector.py          # API integration engine
+│   │   │   │   │   ├── db_connector.py           # Database connector
+│   │   │   │   │   └── sync_engine.py            # Data synchronization
+│   │   │   │   ├── 📁 workflows/                 # Data sync automation
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── etl_pipeline.py           # ETL pipeline automation
+│   │   │   │   │   └── real_time_sync.py         # Real-time data sync
+│   │   │   │   ├── 📁 api/                       # Integration API routes
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   └── routes.py                 # Data integration API
+│   │   │   │   └── 📁 config/                    # Integration configuration
+│   │   │   │       ├── __init__.py
+│   │   │   │       └── settings.py               # Data integration settings
+│   │   │   │
+│   │   │   ├── 📁 report_generator/              # 📊 REPORT GENERATOR
+│   │   │   │   ├── __init__.py                   # Package initialization
+│   │   │   │   ├── 📁 core/                      # Report engine
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── report_engine.py          # Report generation engine
+│   │   │   │   │   ├── template_manager.py      # Report template management
+│   │   │   │   │   └── chart_generator.py       # Chart and graph generation
+│   │   │   │   ├── 📁 workflows/                 # Report automation
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── scheduler.py              # Report scheduling
+│   │   │   │   │   └── distributor.py            # Report distribution
+│   │   │   │   ├── 📁 api/                       # Report API routes
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   └── routes.py                 # Report generator API
+│   │   │   │   └── 📁 config/                    # Report generator configuration
+│   │   │   │       ├── __init__.py
+│   │   │   │       └── settings.py               # Report generator settings
+│   │   │   │
+│   │   │   ├── 📁 ai_assistant/                  # 🤖 AI ASSISTANT
+│   │   │   │   ├── __init__.py                   # Package initialization
+│   │   │   │   ├── 📁 core/                      # AI engine
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── nlp_engine.py             # Natural language processing
+│   │   │   │   │   ├── decision_engine.py        # Intelligent decision support
+│   │   │   │   │   └── prediction_engine.py      # Predictive analytics
+│   │   │   │   ├── 📁 workflows/                 # AI automation
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   ├── task_router.py            # Smart task routing
+│   │   │   │   │   └── anomaly_detector.py       # Anomaly detection
+│   │   │   │   ├── 📁 api/                       # AI API routes
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   └── routes.py                 # AI assistant API
+│   │   │   │   └── 📁 config/                    # AI assistant configuration
+│   │   │   │       ├── __init__.py
+│   │   │   │       └── settings.py               # AI assistant settings
+│   │   │   │
+│   │   │   └── setup_automations.py              # Automation setup script
+│   │   │
+│   │   ├── 📁 core/                              # Core MCP functionality
+│   │   │   ├── __init__.py
+│   │   │   ├── context_manager.py                # Context storage and retrieval
+│   │   │   ├── data_processor.py                 # Data processing utilities
+│   │   │   ├── file_manager.py                   # File management system
+│   │   │   ├── monitoring.py                     # System monitoring utilities
+│   │   │   ├── security_manager.py               # Security management
+│   │   │   └── user_manager.py                   # User management system
+│   │   │
+│   │   ├── 📁 api/                               # Legacy API routes (to be migrated)
+│   │   │   ├── __init__.py
+│   │   │   ├── analytics_routes.py               # Analytics API routes (to be moved to automations/meta_minds/api/)
+│   │   │   ├── auth_routes.py                    # Authentication API routes
+│   │   │   ├── context_routes.py                 # Context API routes (moved to context/)
+│   │   │   ├── file_routes.py                    # File API routes (moved to files/)
+│   │   │   ├── mcp_routes.py                     # MCP Tools API routes (moved to mcp_tools/)
+│   │   │   ├── monitoring_routes.py              # Monitoring API routes (moved to monitoring/)
+│   │   │   ├── processing_routes.py              # Data processing API routes
+│   │   │   └── stream_routes.py                  # Streaming API routes (moved to streaming/)
+│   │   │
+│   │   ├── 📁 integrations/                      # Legacy integrations (to be migrated)
+│   │   │   ├── __init__.py
+│   │   │   └── meta_minds.py                     # META-MINDS integration (moved to automations/meta_minds/core/)
+│   │   │
+│   │   ├── 📁 middleware/                        # Security middleware
+│   │   │   ├── __init__.py
+│   │   │   └── security.py                       # Security middleware (rate limiting, input validation, audit logging)
+│   │   │
+│   │   ├── 📁 models/                            # Data models
+│   │   │   ├── __init__.py
+│   │   │   └── pydantic_models.py                # Pydantic models for request/response validation
+│   │   │
+│   │   ├── 📁 workflows/                         # Legacy workflows (to be migrated)
+│   │   │   ├── __init__.py
+│   │   │   └── meta_minds_workflow.py             # META-MINDS workflows (moved to automations/meta_minds/workflows/)
+│   │   │
+│   │   └── main.py                               # Main FastAPI application entry point
+│   │
+│   ├── 📁 data/                                  # Backend data storage
+│   │   ├── 📁 context/                          # Context data storage
+│   │   ├── 📁 files/                            # File storage
+│   │   │   ├── 📁 tmp/                          # Temporary files
+│   │   │   └── 📁 versions/                     # File versions
+│   │   ├── 📁 tmp/                              # Temporary files
+│   │   ├── 📁 users/                            # User data
+│   │   │   └── users.json                       # User database
+│   │   └── 📁 versions/                         # File versions
+│   │
+│   ├── env.example                              # Environment configuration template
+│   ├── fastmcp.log                             # Application log file
+│   ├── requirements.txt                        # Python dependencies
+│   ├── 📁 static/                              # Static files
+│   └── 📁 templates/                           # HTML templates
+│       └── upload.html                         # File upload template
+│
+├── 📁 frontend/                                 # 🌐 FRONTEND APPLICATION
+│   ├── 📁 build/                                # Built React application
+│   │   ├── asset-manifest.json                 # Asset manifest
+│   │   ├── index.html                          # Main HTML file
+│   │   └── 📁 static/                           # Static assets
+│   │       ├── 📁 css/                          # CSS files
+│   │       │   ├── main.e8d10bd4.css           # Main CSS file
+│   │       │   └── main.e8d10bd4.css.map        # CSS source map
+│   │       └── 📁 js/                           # JavaScript files
+│   │           ├── main.c9c9f343.js             # Main JavaScript file
+│   │           ├── main.c9c9f343.js.LICENSE.txt # JavaScript license
+│   │           └── main.c9c9f343.js.map         # JavaScript source map
+│   │
+│   ├── 📁 src/                                  # React source code
+│   │   ├── App.css                              # Main application styles
+│   │   ├── App.js                               # Main React application component
+│   │   ├── index.css                            # Global styles
+│   │   ├── index.js                             # React application entry point
+│   │   ├── 📁 components/                       # React components
+│   │   │   └── 📁 ui/                           # UI components (46 files)
+│   │   │       ├── accordion.jsx                # Accordion component
+│   │   │       ├── alert-dialog.jsx             # Alert dialog component
+│   │   │       ├── alert.jsx                    # Alert component
+│   │   │       ├── aspect-ratio.jsx             # Aspect ratio component
+│   │   │       ├── avatar.jsx                   # Avatar component
+│   │   │       ├── badge.jsx                    # Badge component
+│   │   │       ├── breadcrumb.jsx               # Breadcrumb component
+│   │   │       ├── button.jsx                   # Button component
+│   │   │       ├── calendar.jsx                 # Calendar component
+│   │   │       ├── card.jsx                     # Card component
+│   │   │       ├── carousel.jsx                 # Carousel component
+│   │   │       ├── checkbox.jsx                 # Checkbox component
+│   │   │       ├── collapsible.jsx               # Collapsible component
+│   │   │       ├── command.jsx                  # Command component
+│   │   │       ├── context-menu.jsx             # Context menu component
+│   │   │       ├── dialog.jsx                   # Dialog component
+│   │   │       ├── drawer.jsx                   # Drawer component
+│   │   │       ├── dropdown-menu.jsx             # Dropdown menu component
+│   │   │       ├── form.jsx                      # Form component
+│   │   │       ├── hover-card.jsx                # Hover card component
+│   │   │       ├── input-otp.jsx                 # OTP input component
+│   │   │       ├── input.jsx                     # Input component
+│   │   │       ├── label.jsx                    # Label component
+│   │   │       ├── menubar.jsx                   # Menu bar component
+│   │   │       ├── navigation-menu.jsx          # Navigation menu component
+│   │   │       ├── pagination.jsx                # Pagination component
+│   │   │       ├── popover.jsx                   # Popover component
+│   │   │       ├── progress.jsx                 # Progress component
+│   │   │       ├── radio-group.jsx               # Radio group component
+│   │   │       ├── resizable.jsx                 # Resizable component
+│   │   │       ├── scroll-area.jsx               # Scroll area component
+│   │   │       ├── select.jsx                    # Select component
+│   │   │       ├── separator.jsx                 # Separator component
+│   │   │       ├── sheet.jsx                     # Sheet component
+│   │   │       ├── skeleton.jsx                  # Skeleton component
+│   │   │       ├── slider.jsx                    # Slider component
+│   │   │       ├── sonner.jsx                    # Sonner toast component
+│   │   │       ├── switch.jsx                    # Switch component
+│   │   │       ├── table.jsx                     # Table component
+│   │   │       ├── tabs.jsx                     # Tabs component
+│   │   │       ├── textarea.jsx                  # Textarea component
+│   │   │       ├── toast.jsx                     # Toast component
+│   │   │       ├── toaster.jsx                   # Toaster component
+│   │   │       ├── toggle-group.jsx              # Toggle group component
+│   │   │       ├── toggle.jsx                   # Toggle component
+│   │   │       └── tooltip.jsx                   # Tooltip component
+│   │   ├── 📁 hooks/                             # React hooks
+│   │   │   └── use-toast.js                      # Toast hook
+│   │   └── 📁 lib/                               # Utility libraries
+│   │       └── utils.js                          # Utility functions
+│   │
+│   ├── components.json                           # Component configuration
+│   ├── craco.config.js                          # CRACO configuration
+│   ├── jsconfig.json                            # JavaScript configuration
+│   ├── package-lock.json                        # Package lock file
+│   ├── package.json                             # Node.js dependencies
+│   ├── postcss.config.js                        # PostCSS configuration
+│   ├── 📁 public/                                # Public assets
+│   │   └── index.html                           # HTML template
+│   ├── README.md                                # Frontend documentation
+│   ├── tailwind.config.js                       # Tailwind CSS configuration
+│   └── yarn.lock                                # Yarn lock file
+│
+├── 📁 config/                                   # ⚙️ CONFIGURATION FILES
+│   ├── config.env.example                       # Environment configuration template
+│   ├── nginx.conf                               # Nginx reverse proxy configuration
+│   ├── prometheus.yml                           # Prometheus monitoring configuration
+│   └── README.md                                # Configuration guide
+│
+├── 📁 interface/                                # 🌐 INTERFACE FILES
+│   ├── mcp-interface.html                       # Main MCP Server interface (HTML)
+│   ├── test-cors.html                           # CORS testing interface
+│   ├── serve-interface.py                       # Simple interface server
+│   ├── start-interface-server.py                # Enhanced interface server with CORS
+│   └── README.md                                # Interface guide
+│
+├── 📁 deployment/                               # 🚀 DEPLOYMENT FILES
+│   ├── deploy-firebase.md                       # Firebase deployment guide
+│   ├── docker-compose.yml                       # Docker Compose configuration
+│   ├── Dockerfile                               # Docker container configuration
+│   ├── firebase.json                            # Firebase configuration
+│   ├── .firebaserc                              # Firebase project settings
+│   ├── storage.rules                            # Firebase Storage security rules
+│   └── README.md                                # Deployment guide
+│
+├── 📁 scripts/                                  # 📜 UTILITY SCRIPTS
+│   ├── start-interface.bat                      # Windows batch file to start interface server
+│   └── README.md                                # Scripts guide
+│
+├── 📁 docs/                                     # 📚 DOCUMENTATION
+│   ├── API.md                                   # API documentation
+│   ├── AUTOMATION_HUB_GUIDE.md                  # Automation hub guide
+│   ├── CODE_ORGANIZATION_SUMMARY.md             # Code organization summary
+│   ├── DEPLOYMENT.md                            # Deployment documentation
+│   ├── DUAL_QUESTION_SYSTEM.md                  # META-MINDS dual question system
+│   ├── INTERFACE_CODE_ORGANIZATION.md           # Interface code organization
+│   ├── MERGE_SUMMARY.md                         # Project merge summary
+│   ├── META_MINDS_INTEGRATION_EXPLAINED.md      # META-MINDS integration explanation
+│   ├── META_MINDS_INTEGRATION.md                # META-MINDS integration guide
+│   ├── ORGANIZED_STRUCTURE.md                   # Organized structure documentation
+│   ├── PERFORMANCE_OPTIMIZATIONS.md             # Performance optimizations guide
+│   └── QUICKSTART_META_MINDS.md                 # META-MINDS quick start guide
+│
+├── 📁 data/                                     # 💾 DATA STORAGE
+│   ├── 📁 context/                              # Context data storage
+│   ├── 📁 files/                                # File storage
+│   ├── 📁 reports/                              # META-MINDS reports storage
+│   ├── 📁 tmp/                                  # Temporary files
+│   ├── 📁 users/                                # User data storage
+│   └── 📁 versions/                             # File versions storage
+│
+├── 📁 functions/                                # ☁️ FIREBASE FUNCTIONS
+│   ├── main.py                                  # Firebase Functions entry point
+│   └── requirements.txt                         # Firebase Functions dependencies
+│
+├── 📁 tests/                                    # 🧪 TESTING
+│   └── backend_test.py                          # Backend API tests
+│
+├── 📄 README.md                                 # 📖 Main project documentation
+├── 📄 LICENSE                                   # 📜 MIT License
+├── 📄 .gitignore                                # 🚫 Git ignore rules
+└── 📄 COMPLETE_FILE_ORGANIZATION.md             # Complete file organization documentation
+```
+
+## 🎯 INTERFACE TAB MAPPING
+
+| Interface Tab | Code Location | Description |
+|---------------|---------------|-------------|
+| 🔧 MCP Tools | `backend/app/mcp_tools/` | Tool execution and management |
+| 📄 Context | `backend/app/context/` | Context storage and retrieval |
+| 📁 Files | `backend/app/files/` | File upload, download, management |
+| 📡 Streaming | `backend/app/streaming/` | Real-time data streaming |
+| 📊 Monitoring | `backend/app/monitoring/` | System health and metrics |
+| ❓ Help | `backend/app/help/` | Documentation and guides |
+| 🤖 Automations | `backend/app/automations/` | All automation modules |
+
+## 🧠 META-MINDS INTEGRATION
+
+### Core Features:
+- **SMART Question Generation**: 97%+ quality analytical questions
+- **Multi-Dataset Analysis**: Cross-dataset comparison capabilities
+- **Executive Reports**: Professional, formatted outputs
+- **17+ Business Templates**: Financial, Sales, Marketing, HR, and more
+- **Quality Scoring**: Automated SMART compliance assessment
+- **Batch Processing**: Analyze multiple datasets simultaneously
+
+### File Locations:
+- **Core Engine**: `backend/app/automations/meta_minds/core/engine.py`
+- **Workflows**: `backend/app/automations/meta_minds/workflows/automation.py`
+- **API Routes**: `backend/app/automations/meta_minds/api/routes.py`
+- **Configuration**: `backend/app/automations/meta_minds/config/settings.py`
+
+## 🚀 DEPLOYMENT OPTIONS
+
+### Docker Deployment:
+```bash
+# Start all services
+docker-compose up -d
+
+# Services included:
+# - MCP Server (FastAPI)
+# - MongoDB
+# - Redis
+# - Nginx
+# - Prometheus
+# - Grafana
+```
+
+### Firebase Deployment:
+```bash
+# Install Firebase CLI
+npm install -g firebase-tools
+
+# Login to Firebase
+firebase login
+
+# Deploy to Firebase
+firebase deploy
+```
+
+## 📊 MONITORING
+
+- **Prometheus**: http://localhost:9090
+- **Grafana**: http://localhost:3000
+- **MCP Server**: http://localhost:8000
+- **Interface**: http://localhost:3001/mcp-interface.html
+
+## 🔧 QUICK START
+
+### Backend:
+```bash
+cd backend
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### Interface:
+```bash
+cd interface
+python start-interface-server.py
+```
+
+### Access:
+- **Interface**: http://localhost:3001/mcp-interface.html
+- **API Docs**: http://localhost:8000/docs
+- **Health Check**: http://localhost:8000/health
+
+## 📋 FEATURES
+
+### Core MCP Features:
+- ✅ Model Context Protocol implementation
+- ✅ Tool execution and management
+- ✅ Context storage and retrieval
+- ✅ File management and versioning
+- ✅ Real-time streaming (SSE)
+- ✅ System monitoring and health checks
+
+### META-MINDS Features:
+- ✅ AI-powered data analytics
+- ✅ SMART question generation (97%+ quality)
+- ✅ Multi-dataset cross-analysis
+- ✅ Executive-ready reports
+- ✅ 17+ business context templates
+- ✅ Quality assessment and scoring
+
+### Automation Features:
+- ✅ Document Processing (PDF, Word, OCR)
+- ✅ Workflow Builder (Visual designer)
+- ✅ Data Integration (API & DB connectors)
+- ✅ Report Generator (Automated reports)
+- ✅ AI Assistant (Natural language automation)
+
+### Deployment Features:
+- ✅ Docker containerization
+- ✅ Firebase deployment
+- ✅ Nginx reverse proxy
+- ✅ Prometheus monitoring
+- ✅ Grafana dashboards
+
+## 🎉 PROJECT STATUS
+
+### ✅ Completed:
+- ✅ Complete code organization by interface tabs
+- ✅ META-MINDS integration with dual question system
+- ✅ Performance optimizations
+- ✅ Docker containerization
+- ✅ Firebase deployment support
+- ✅ Comprehensive documentation
+- ✅ Professional file structure
+
+### 🔄 In Progress:
+- 🔄 API route migration to organized structure
+- 🔄 Core module implementation for each tab
+- 🔄 Utility module implementation
+
+### 📋 TODO:
+- 📋 Complete automation implementations
+- 📋 Enhanced monitoring dashboards
+- 📋 Advanced security features
+- 📋 Performance testing
+- 📋 User authentication system
+
+## 📞 SUPPORT
+
+- **Documentation**: See `docs/` folder
+- **API Reference**: http://localhost:8000/docs
+- **META-MINDS Repo**: https://github.com/Jatin23K/META-MINDS
+- **License**: MIT
+
+---
+
+**MCP Server - Unified Model Context Protocol Implementation with Advanced AI Analytics** 🚀✨

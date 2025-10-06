@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CORS Test</title>
+</head>
+<body>
+    <h1>Testing CORS Connection</h1>
+    <button onclick="testCORS()">Test Backend Connection</button>
+    <pre id="result"></pre>
+
+    <script>
+        async function testCORS() {
+            const resultEl = document.getElementById('result');
+            resultEl.textContent = 'Testing...';
+            
+            try {
+                const response = await fetch('http://localhost:8000/health', {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                resultEl.textContent = '✅ SUCCESS!\n\n' + JSON.stringify(data, null, 2);
+                resultEl.style.color = 'green';
+            } catch (error) {
+                resultEl.textContent = '❌ FAILED!\n\n' + error.message;
+                resultEl.style.color = 'red';
+            }
+        }
+    </script>
+</body>
+</html>

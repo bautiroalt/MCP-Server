@@ -56,7 +56,8 @@ from pydantic import BaseModel, Field
 from app.api import (
     file_routes, context_routes, stream_routes, 
     monitoring_routes, processing_routes, auth_routes,
-    mcp_routes  # New MCP tool routes
+    mcp_routes,  # New MCP tool routes
+    analytics_routes  # META-MINDS analytics routes
 )
 from app.core.file_manager import file_manager
 from app.core.context_manager import mcp_context_manager
@@ -98,7 +99,7 @@ limiter = Limiter(key_func=get_remote_address)
 
 # Security Settings from Environment
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
-CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:3001,http://localhost:3002").split(",")
 API_KEY_NAME = os.getenv("API_KEY_NAME", "X-API-Key")
 API_KEY = os.getenv("API_KEY", None)
 
@@ -452,6 +453,7 @@ app.include_router(file_routes.router, prefix="/mcp/api/v1", tags=["files"])
 app.include_router(stream_routes.router, prefix="/mcp/api/v1", tags=["streams"])
 app.include_router(monitoring_routes.router, prefix="/mcp/api/v1", tags=["monitoring"])
 app.include_router(processing_routes.router, prefix="/mcp/api/v1", tags=["processing"])
+app.include_router(analytics_routes.router, tags=["analytics"])  # META-MINDS analytics
 
 # Create static and templates directories if they don't exist
 os.makedirs("static", exist_ok=True)

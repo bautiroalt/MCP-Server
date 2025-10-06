@@ -1,0 +1,70 @@
+# NEW MCP Server - Prometheus Configuration
+# Monitoring and metrics collection
+# ----------------------------------------------------
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # MCP Server metrics
+  - job_name: 'mcp-server'
+    static_configs:
+      - targets: ['mcp-server:8000']
+    metrics_path: '/monitoring/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # Node Exporter (if available)
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 15s
+
+  # MongoDB Exporter (if available)
+  - job_name: 'mongodb-exporter'
+    static_configs:
+      - targets: ['mongodb-exporter:9216']
+    scrape_interval: 15s
+
+  # Redis Exporter (if available)
+  - job_name: 'redis-exporter'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+    scrape_interval: 15s
+
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 15s
+
+# Alerting configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Recording rules for common queries
+recording_rules:
+  - name: "mcp_server_rules"
+    rules:
+      - record: mcp:request_rate
+        expr: rate(mcp_requests_total[5m])
+      
+      - record: mcp:error_rate
+        expr: rate(mcp_errors_total[5m])
+      
+      - record: mcp:avg_response_time
+        expr: rate(mcp_request_duration_seconds_sum[5m]) / rate(mcp_request_duration_seconds_count[5m])
+      
+      - record: mcp:memory_usage_percent
+        expr: (mcp_memory_usage_bytes / (1024*1024*1024)) * 100
+      
+      - record: mcp:disk_usage_percent
+        expr: (mcp_disk_usage_bytes / (1024*1024*1024*1024)) * 100

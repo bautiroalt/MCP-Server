@@ -1,0 +1,22 @@
+[
+    {
+        "username": "Jatin23K",
+        "hashed_password": "$2b$12$Gm9wVHKNbSvUuGmMFDlLz.kgtLO6x4iwmEM3wJ1oF8qGJKkWiXrPS",
+        "email": "jatin@example.com",
+        "full_name": "Jatin",
+        "roles": [
+            "admin"
+        ],
+        "disabled": false
+    },
+    {
+        "username": "coder1",
+        "hashed_password": "$2b$12$K8HZ1pHcKrdBjfCmP79/j.L.sPq3pHJ/W8JZsku4mxfiZHgglCqne",
+        "email": "coder1@example.com",
+        "full_name": "Coder One",
+        "roles": [
+            "user"
+        ],
+        "disabled": false
+    }
+]

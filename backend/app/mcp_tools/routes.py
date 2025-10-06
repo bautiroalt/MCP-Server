@@ -141,16 +141,16 @@ async def meta_minds_analysis_tool(
                 detail=f"Unsupported file type: {file_ext}. Supported: {', '.join(valid_extensions)}"
             )
         
-        # Run full META-MINDS analysis using the integrated analyzer
-        analysis_report = meta_minds_analyzer.analyze_dataset(
-            dataset_path=dataset_path,
-            business_context=business_context,
-            analysis_focus=analysis_focus,
-            target_audience=target_audience,
-            num_questions=num_questions,
-            num_cross_questions=num_cross_questions,
-            total_datasets=total_datasets
-        )
+                # Run full META-MINDS analysis using the integrated analyzer
+                analysis_report = meta_minds_analyzer.analyze_dataset(
+                    dataset_path=dataset_path,
+                    business_context=business_context,
+                    analysis_focus=analysis_focus,
+                    target_audience=target_audience,
+                    num_questions=num_questions,
+                    num_cross_questions=num_cross_questions,
+                    total_datasets=total_datasets
+                )
         
         return analysis_report
         

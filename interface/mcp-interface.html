@@ -1,0 +1,2229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Server Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800">
+    <!-- Header -->
+    <div class="bg-gray-900 border-b border-yellow-500 shadow-lg">
+        <div class="max-w-7xl mx-auto px-6 py-6">
+            <div class="flex items-center justify-center gap-4">
+                <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 p-3 rounded-xl shadow-lg border-2 border-yellow-400">
+                    <svg class="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z"/>
+                        <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z" fill="black"/>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+                        🦇 BATMAN MCP SERVER 🦇
+                    </h1>
+                    <p class="text-yellow-300 mt-1">Dark Knight Protocol - Advanced Crime Fighting Features</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="max-w-7xl mx-auto px-6 py-4">
+        <div class="flex space-x-1 bg-gray-800 rounded-lg p-1 border border-yellow-500">
+            <button onclick="showTab('mcp-tools')" id="tab-mcp-tools" class="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-all bg-yellow-500 text-black shadow-lg">
+                <span>🦇</span>
+                <span class="font-medium">BATMAN TOOLS</span>
+            </button>
+            <button onclick="showTab('context')" id="tab-context" class="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-all text-yellow-300 hover:text-yellow-100">
+                <span>🦇</span>
+                <span class="font-medium">BATCAVE</span>
+            </button>
+            <button onclick="showTab('files')" id="tab-files" class="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-all text-yellow-300 hover:text-yellow-100">
+                <span>🦇</span>
+                <span class="font-medium">EVIDENCE</span>
+            </button>
+            <button onclick="showTab('streaming')" id="tab-streaming" class="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-all text-yellow-300 hover:text-yellow-100">
+                <span>🦇</span>
+                <span class="font-medium">SURVEILLANCE</span>
+            </button>
+            <button onclick="showTab('monitoring')" id="tab-monitoring" class="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-all text-yellow-300 hover:text-yellow-100">
+                <span>🦇</span>
+                <span class="font-medium">GOTHAM WATCH</span>
+            </button>
+            <button onclick="showTab('automations')" id="tab-automations" class="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-all text-yellow-300 hover:text-yellow-100">
+                <span>🦇</span>
+                <span class="font-medium">BAT-GADGETS</span>
+            </button>
+            <button onclick="showTab('help')" id="tab-help" class="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-all text-yellow-300 hover:text-yellow-100">
+                <span>🦇</span>
+                <span class="font-medium">ALFRED'S HELP</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-6 pb-8">
+        <!-- MCP Tools Tab -->
+        <div id="content-mcp-tools" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Tools List -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
+                            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                </svg>
+                                MCP Tools
+                            </h2>
+                        </div>
+                        <div class="p-4 space-y-2" id="tools-list">
+                            <div class="text-center py-8">
+                                <div class="animate-spin w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                                <p class="text-gray-600">Loading tools...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool Execution Panel -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-12 text-center">
+                        <div class="inline-block bg-indigo-100 p-6 rounded-full mb-4">
+                            <svg class="w-16 h-16 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Select a Tool to Get Started</h3>
+                        <p class="text-gray-600">Choose a tool from the left panel to execute MCP operations</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Context Tab -->
+        <div id="content-context" class="tab-content hidden">
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Context Management</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">Current Context</h3>
+                        <div class="bg-gray-50 rounded-lg p-4 max-h-64 overflow-y-auto">
+                            <pre class="text-sm text-gray-600" id="context-display">Loading context...</pre>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">Context Operations</h3>
+                        <div class="space-y-3">
+                            <button onclick="addContextItem()" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+                                Add Context Item
+                            </button>
+                            <button onclick="updateContext()" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors">
+                                Update Context
+                            </button>
+                            <button onclick="clearContext()" class="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors">
+                                Clear Context
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Files Tab -->
+        <div id="content-files" class="tab-content hidden">
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">File Management</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">Upload Files</h3>
+                        <div id="drop-zone" class="border-2 border-dashed border-indigo-300 rounded-lg p-8 text-center cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-all"
+                             ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" onclick="document.getElementById('file-input').click()">
+                            <input type="file" id="file-input" class="hidden" accept=".jpg,.jpeg,.png,.json,.py,.md,.txt,.csv,.xlsx" multiple onchange="handleFileSelect(event)">
+                            <svg class="w-12 h-12 text-indigo-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <p class="text-indigo-600 font-semibold mb-2">Click to browse or drag & drop files</p>
+                            <p class="text-sm text-gray-500">Supported: JPG, PNG, JSON, PY, MD, TXT, CSV, XLSX</p>
+                        </div>
+                        <div id="upload-progress" class="mt-4 hidden">
+                            <div class="bg-indigo-100 rounded-lg p-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="animate-spin w-5 h-5 border-3 border-indigo-500 border-t-transparent rounded-full"></div>
+                                    <span class="text-indigo-700 font-medium">Uploading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">File List</h3>
+                        <div class="bg-gray-50 rounded-lg p-4 max-h-64 overflow-y-auto" id="files-list">
+                            <p class="text-gray-500 text-center">Loading files...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Streaming Tab -->
+        <div id="content-streaming" class="tab-content hidden">
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Real-time Streaming</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">Stream Controls</h3>
+                        <div class="space-y-3">
+                            <button onclick="toggleStreaming()" id="stream-button" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors">
+                                Start Streaming
+                            </button>
+                            <div class="flex items-center gap-2">
+                                <div id="stream-indicator" class="w-3 h-3 rounded-full bg-gray-400"></div>
+                                <span class="text-sm text-gray-600" id="stream-status">Streaming Inactive</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">Stream Events</h3>
+                        <div class="bg-gray-50 rounded-lg p-4 max-h-64 overflow-y-auto" id="stream-events">
+                            <div class="space-y-2">
+                                <div class="text-sm text-gray-600">System initialized</div>
+                                <div class="text-sm text-gray-600">Ready for streaming</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoring Tab -->
+        <div id="content-monitoring" class="tab-content hidden">
+            <div class="space-y-6">
+                <!-- Server Status -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Server Status</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="server-status">
+                        <div class="text-center py-8">
+                            <div class="animate-spin w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                            <p class="text-gray-600">Loading server status...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Metrics -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">System Metrics</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="system-metrics">
+                        <div class="text-center py-8">
+                            <div class="animate-spin w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                            <p class="text-gray-600">Loading metrics...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Automations Tab -->
+        <div id="content-automations" class="tab-content hidden">
+            <div class="space-y-6">
+                <!-- Automations Header -->
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl shadow-lg p-6 text-white">
+                    <div class="flex items-center gap-4">
+                        <span class="text-5xl">🤖</span>
+                        <div>
+                            <h2 class="text-3xl font-bold">Automation Hub</h2>
+                            <p class="text-indigo-100 mt-1">Integrated Automation Tools & Workflows</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Automation Blocks Grid -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- META-MINDS Analytics Block -->
+                    <div class="bg-white rounded-2xl shadow-lg border-2 border-purple-200 hover:border-purple-400 transition-all cursor-pointer p-6 hover:shadow-xl" onclick="showAutomation('meta-minds')">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="bg-gradient-to-br from-purple-500 to-pink-600 p-3 rounded-xl">
+                                <span class="text-3xl">🧠</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">META-MINDS</h3>
+                                <p class="text-xs text-purple-600">Data Analytics</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">AI-powered SMART question generation with 97%+ quality scores</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">Analytics</span>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Active</span>
+                        </div>
+                    </div>
+
+                    <!-- PROJECT STRATEGIST Block -->
+                    <div class="bg-white rounded-2xl shadow-lg border-2 border-orange-200 hover:border-orange-400 transition-all cursor-pointer p-6 hover:shadow-xl" onclick="showAutomation('project-strategist')">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="bg-gradient-to-br from-orange-500 to-red-600 p-3 rounded-xl">
+                                <span class="text-3xl">📋</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">PROJECT STRATEGIST</h3>
+                                <p class="text-xs text-orange-600">Project Management</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Scope of work, project proposals, pace strategy and planning documents</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">Strategy</span>
+                            <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Coming Soon</span>
+                        </div>
+                    </div>
+
+                    <!-- SAMPLE SELECTOR Block -->
+                    <div class="bg-white rounded-2xl shadow-lg border-2 border-cyan-200 hover:border-cyan-400 transition-all cursor-pointer p-6 hover:shadow-xl" onclick="showAutomation('sample-selector')">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="bg-gradient-to-br from-cyan-500 to-blue-600 p-3 rounded-xl">
+                                <span class="text-3xl">🎯</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">SAMPLE SELECTOR</h3>
+                                <p class="text-xs text-cyan-600">Data Sampling</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Intelligent sample selection for statistical analysis and research</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded">Sampling</span>
+                            <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Coming Soon</span>
+                        </div>
+                    </div>
+
+                    <!-- DATA QUALITY VALIDATOR Block -->
+                    <div class="bg-white rounded-2xl shadow-lg border-2 border-red-200 hover:border-red-400 transition-all cursor-pointer p-6 hover:shadow-xl" onclick="showAutomation('data-quality-validator')">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="bg-gradient-to-br from-red-500 to-pink-600 p-3 rounded-xl">
+                                <span class="text-3xl">🔍</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">DATA QUALITY VALIDATOR</h3>
+                                <p class="text-xs text-red-600">Quality Assurance</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Comprehensive dataset quality checking and validation</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">Quality</span>
+                            <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Coming Soon</span>
+                        </div>
+                    </div>
+
+                    <!-- SURFACE EXPLORER Block -->
+                    <div class="bg-white rounded-2xl shadow-lg border-2 border-teal-200 hover:border-teal-400 transition-all cursor-pointer p-6 hover:shadow-xl" onclick="showAutomation('surface-explorer')">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="bg-gradient-to-br from-teal-500 to-green-600 p-3 rounded-xl">
+                                <span class="text-3xl">🔬</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">SURFACE EXPLORER</h3>
+                                <p class="text-xs text-teal-600">Data Exploration</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Basic data exploration and preliminary analysis tools</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded">Exploration</span>
+                            <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Coming Soon</span>
+                        </div>
+                    </div>
+
+                    <!-- CENTRAL ORCHESTRATOR Block -->
+                    <div class="bg-white rounded-2xl shadow-lg border-2 border-indigo-200 hover:border-indigo-400 transition-all cursor-pointer p-6 hover:shadow-xl" onclick="showAutomation('central-orchestrator')">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="bg-gradient-to-br from-indigo-500 to-purple-600 p-3 rounded-xl">
+                                <span class="text-3xl">🎼</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">CENTRAL ORCHESTRATOR</h3>
+                                <p class="text-xs text-indigo-600">Workflow Management</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Centralized workflow orchestration and task management</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded">Orchestration</span>
+                            <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Coming Soon</span>
+                        </div>
+                    </div>
+
+                    <!-- WORKFLOW ENGINE Block -->
+                    <div class="bg-white rounded-2xl shadow-lg border-2 border-green-200 hover:border-green-400 transition-all cursor-pointer p-6 hover:shadow-xl" onclick="showAutomation('workflow-engine')">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="bg-gradient-to-br from-green-500 to-teal-600 p-3 rounded-xl">
+                                <span class="text-3xl">⚡</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">WORKFLOW ENGINE</h3>
+                                <p class="text-xs text-green-600">Process Automation</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Advanced workflow automation and process management</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Workflow</span>
+                            <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Coming Soon</span>
+                        </div>
+                    </div>
+
+                    <!-- SHARED KNOWLEDGE BASE Block -->
+                    <div class="bg-white rounded-2xl shadow-lg border-2 border-yellow-200 hover:border-yellow-400 transition-all cursor-pointer p-6 hover:shadow-xl" onclick="showAutomation('shared-knowledge-base')">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="bg-gradient-to-br from-yellow-500 to-orange-600 p-3 rounded-xl">
+                                <span class="text-3xl">📚</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">SHARED KNOWLEDGE BASE</h3>
+                                <p class="text-xs text-yellow-600">Knowledge Management</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Centralized knowledge repository and information management</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Knowledge</span>
+                            <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Coming Soon</span>
+                        </div>
+                    </div>
+
+                    <!-- HUMAN INTERVENTION SYSTEM Block -->
+                    <div class="bg-white rounded-2xl shadow-lg border-2 border-pink-200 hover:border-pink-400 transition-all cursor-pointer p-6 hover:shadow-xl" onclick="showAutomation('human-intervention-system')">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="bg-gradient-to-br from-pink-500 to-rose-600 p-3 rounded-xl">
+                                <span class="text-3xl">👥</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">HUMAN INTERVENTION SYSTEM</h3>
+                                <p class="text-xs text-pink-600">Human-in-the-Loop</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Human-in-the-loop automation and decision support</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="text-xs bg-pink-100 text-pink-700 px-2 py-1 rounded">Human-AI</span>
+                            <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Coming Soon</span>
+                        </div>
+                    </div>
+
+                </div>
+                </div>
+
+                <!-- Selected Automation Panel -->
+                <div id="automation-panel" class="hidden"></div>
+
+                <!-- META-MINDS Configuration (Initially Hidden) -->
+                <div id="meta-minds-config" class="hidden">
+                <!-- Step 1: Number of Datasets -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">1</span>
+                        Number of Datasets
+                    </h3>
+                    <div class="max-w-md">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">How many datasets do you want to analyze?</label>
+                        <input type="number" id="num-datasets" value="1" min="1" max="10" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none" onchange="updateDatasetSelection()">
+                        <p class="text-xs text-gray-500 mt-1">Choose 1-10 datasets for analysis</p>
+                    </div>
+                </div>
+
+                <!-- Step 2: Dataset Selection (Dynamic) -->
+                <div id="dataset-selection-container" class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">2</span>
+                        Dataset Selection
+                    </h3>
+                    <div id="dataset-selection-grid" class="grid md:grid-cols-2 gap-4">
+                        <!-- Dynamic dataset selection will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Step 3: Business Background -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">3</span>
+                        Business Background Information
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Project Title</label>
+                            <input type="text" id="project-title" placeholder="e.g., Airline Financial Performance Risk Assessment" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Industry/Business Context</label>
+                            <input type="text" id="industry-context" placeholder="e.g., Aviation/Airline Industry" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Analysis Objectives</label>
+                            <textarea id="analysis-objectives" rows="3" placeholder="e.g., Risk assessment, performance evaluation, trend forecasting" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Dataset Background -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">4</span>
+                        Dataset Background & Context
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Dataset Description</label>
+                            <textarea id="dataset-description" rows="3" placeholder="Describe the dataset, its source, time period, key variables..." class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none"></textarea>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Data Time Period</label>
+                                <input type="text" id="time-period" placeholder="e.g., 2020-2024, Q1-Q4 2024" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Key Variables/Metrics</label>
+                                <input type="text" id="key-variables" placeholder="e.g., Revenue, Assets, Liabilities" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Stakeholder Message -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">5</span>
+                        Senior Stakeholder Instructions (Optional)
+                    </h3>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Special Instructions or Focus Areas</label>
+                        <textarea id="stakeholder-message" rows="4" placeholder="Any specific instructions from senior stakeholders, special focus areas, or particular aspects to emphasize..." class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 6: Analysis Configuration -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">6</span>
+                        Analysis Configuration & Settings
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Business Context</label>
+                            <select id="business-context" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+                                <option value="Financial Analysis">💰 Financial Analysis</option>
+                                <option value="Sales Analytics">📈 Sales Analytics</option>
+                                <option value="Marketing Analytics">📣 Marketing Analytics</option>
+                                <option value="Operations">⚙️ Operations</option>
+                                <option value="Human Resources">👥 HR Analytics</option>
+                                <option value="Customer Analytics">🎯 Customer Analytics</option>
+                                <option value="Product Analytics">📦 Product Analytics</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Analysis Focus</label>
+                            <select id="analysis-focus" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+                                <option value="Performance evaluation">📊 Performance Evaluation</option>
+                                <option value="Risk assessment">⚠️ Risk Assessment</option>
+                                <option value="Trend analysis">📉 Trend Analysis</option>
+                                <option value="Forecasting">🔮 Forecasting</option>
+                                <option value="Optimization">🎯 Optimization</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Target Audience</label>
+                            <select id="target-audience" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+                                <option value="Executives">👔 Executives</option>
+                                <option value="Managers">📋 Managers</option>
+                                <option value="Analysts">🔬 Analysts</option>
+                                <option value="Stakeholders">🤝 Stakeholders</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Individual Dataset Questions</label>
+                            <input type="number" id="num-questions" value="15" min="5" max="30" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+                            <p class="text-xs text-gray-500 mt-1">Questions for each dataset separately</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Cross-Dataset Questions (Optional)</label>
+                            <input type="number" id="num-cross-questions" value="5" min="0" max="20" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+                            <p class="text-xs text-gray-500 mt-1">Questions comparing datasets (only if multiple datasets)</p>
+                        </div>
+                    </div>
+                    <button onclick="runMetaMindsAnalysis()" class="w-full mt-6 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-indigo-600 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                        <span>🧠 Run META-MINDS Analysis</span>
+                    </button>
+                </div>
+
+                <!-- Analysis Results -->
+                <div id="analytics-results" class="hidden">
+                    <!-- Results will be dynamically inserted here -->
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Tab -->
+        <div id="content-help" class="tab-content hidden">
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                    <span class="text-4xl">📚</span>
+                    MCP Server User Guide
+                </h1>
+                
+                <!-- Quick Start -->
+                <div class="mb-8 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-6 border border-indigo-200">
+                    <h2 class="text-2xl font-bold text-indigo-800 mb-4">🚀 Quick Start</h2>
+                    <div class="space-y-3 text-gray-700">
+                        <p><strong>1. MCP Tools:</strong> Execute file operations (read, write, list, search)</p>
+                        <p><strong>2. Context:</strong> Manage conversation state and preferences</p>
+                        <p><strong>3. Files:</strong> Upload and manage documents</p>
+                        <p><strong>4. Streaming:</strong> Monitor real-time events</p>
+                        <p><strong>5. Monitoring:</strong> Check server health and performance</p>
+                    </div>
+                </div>
+
+                <!-- MCP Tools Section -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span>🔧</span> MCP Tools - File Operations
+                    </h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                            <h3 class="font-bold text-blue-800 mb-2">📄 read_file</h3>
+                            <p class="text-sm text-gray-700 mb-2">Read contents from any file</p>
+                            <p class="text-xs text-gray-600"><strong>Use:</strong> Let AI read documents, code, configs</p>
+                            <p class="text-xs text-gray-600"><strong>Param:</strong> file_path</p>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                            <h3 class="font-bold text-green-800 mb-2">✍️ write_file</h3>
+                            <p class="text-sm text-gray-700 mb-2">Create or update files</p>
+                            <p class="text-xs text-gray-600"><strong>Use:</strong> AI generates code, creates documents</p>
+                            <p class="text-xs text-gray-600"><strong>Params:</strong> file_path, content</p>
+                        </div>
+                        <div class="bg-purple-50 rounded-lg p-4 border border-purple-200">
+                            <h3 class="font-bold text-purple-800 mb-2">📁 list_directory</h3>
+                            <p class="text-sm text-gray-700 mb-2">List files in a directory</p>
+                            <p class="text-xs text-gray-600"><strong>Use:</strong> Browse file structure, explore projects</p>
+                            <p class="text-xs text-gray-600"><strong>Param:</strong> directory_path</p>
+                        </div>
+                        <div class="bg-orange-50 rounded-lg p-4 border border-orange-200">
+                            <h3 class="font-bold text-orange-800 mb-2">🔍 search_files</h3>
+                            <p class="text-sm text-gray-700 mb-2">Find files matching pattern</p>
+                            <p class="text-xs text-gray-600"><strong>Use:</strong> Search for specific files</p>
+                            <p class="text-xs text-gray-600"><strong>Params:</strong> directory_path, pattern</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Context Management -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span>📝</span> Context Management
+                    </h2>
+                    <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+                        <p class="text-gray-700 mb-3">Store and manage conversation state, user preferences, and session data.</p>
+                        <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                            <li><strong>Add Context:</strong> Store new information for AI to remember</li>
+                            <li><strong>Update Context:</strong> Modify existing context items</li>
+                            <li><strong>Clear Context:</strong> Remove all stored context</li>
+                            <li><strong>View Context:</strong> See current stored data in JSON format</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- File Management -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span>📁</span> File Management
+                    </h2>
+                    <div class="bg-pink-50 rounded-lg p-4 border border-pink-200">
+                        <p class="text-gray-700 mb-3">Complete file lifecycle management with versioning and metadata.</p>
+                        <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                            <li><strong>Upload:</strong> Drag and drop files or click to browse</li>
+                            <li><strong>Download:</strong> Retrieve uploaded files</li>
+                            <li><strong>Delete:</strong> Remove files from storage</li>
+                            <li><strong>Versioning:</strong> Track file history and changes</li>
+                            <li><strong>Metadata:</strong> Automatic file information extraction</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Real-time Streaming -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span>📡</span> Real-time Streaming
+                    </h2>
+                    <div class="bg-cyan-50 rounded-lg p-4 border border-cyan-200">
+                        <p class="text-gray-700 mb-3">Monitor live events and system activity in real-time.</p>
+                        <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                            <li><strong>Start Streaming:</strong> Begin receiving live events</li>
+                            <li><strong>Stop Streaming:</strong> Pause event stream</li>
+                            <li><strong>Event Types:</strong> Context updates, file operations, tool execution</li>
+                            <li><strong>Live Log:</strong> See events as they happen</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Monitoring -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span>📊</span> Server Monitoring
+                    </h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                            <h3 class="font-bold text-green-800 mb-2">Server Status</h3>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>✅ Health status</li>
+                                <li>⏱️ Server uptime</li>
+                                <li>🏷️ Version info</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 rounded-lg p-4 border border-red-200">
+                            <h3 class="font-bold text-red-800 mb-2">System Metrics</h3>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>💻 CPU usage %</li>
+                                <li>🧠 Memory usage %</li>
+                                <li>💾 Disk usage %</li>
+                                <li>🌍 Environment</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Use Cases -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span>💡</span> Common Use Cases
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="bg-indigo-50 rounded-lg p-4 border border-indigo-200">
+                            <h3 class="font-bold text-indigo-800 mb-2">1. AI Document Analysis</h3>
+                            <p class="text-sm text-gray-700">Files Tab → Upload PDFs → MCP Tools → read_file → Context Tab → Store results</p>
+                        </div>
+                        <div class="bg-purple-50 rounded-lg p-4 border border-purple-200">
+                            <h3 class="font-bold text-purple-800 mb-2">2. Automated Code Generation</h3>
+                            <p class="text-sm text-gray-700">Context Tab → Store requirements → MCP Tools → write_file → Files Tab → Download code</p>
+                        </div>
+                        <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                            <h3 class="font-bold text-blue-800 mb-2">3. File System Exploration</h3>
+                            <p class="text-sm text-gray-700">MCP Tools → list_directory → search_files → read_file → View contents</p>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                            <h3 class="font-bold text-green-800 mb-2">4. System Administration</h3>
+                            <p class="text-sm text-gray-700">Monitoring Tab → Check health → Streaming Tab → Monitor events → Manage files</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Information -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span>🔗</span> API Information
+                    </h2>
+                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <p class="font-bold text-gray-800 mb-2">Backend API:</p>
+                                <p class="text-gray-700 font-mono bg-white px-3 py-2 rounded">http://localhost:8000</p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800 mb-2">API Documentation:</p>
+                                <p class="text-gray-700 font-mono bg-white px-3 py-2 rounded">http://localhost:8000/mcp/docs</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tips & Best Practices -->
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-xl p-6 border border-green-200">
+                    <h2 class="text-2xl font-bold text-green-800 mb-4 flex items-center gap-2">
+                        <span>💎</span> Tips & Best Practices
+                    </h2>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong>Start Simple:</strong> Try reading a file first to understand how tools work</li>
+                        <li><strong>Check Monitoring:</strong> Always verify server health before operations</li>
+                        <li><strong>Use Context:</strong> Store important data for persistent AI memory</li>
+                        <li><strong>Monitor Streaming:</strong> Watch events to understand system behavior</li>
+                        <li><strong>File Versioning:</strong> Use versioning to track document changes</li>
+                        <li><strong>Security:</strong> Never expose sensitive file paths or data</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-8 text-center text-gray-600 text-sm pb-8">
+        <p>NEW MCP Server v2.0 - Unified Model Context Protocol Implementation</p>
+        <p class="mt-1">Features: MCP Tools • Context Management • File Operations • Real-time Streaming</p>
+    </div>
+
+    <script>
+        const BACKEND_URL = 'http://localhost:8000';
+        const API = `${BACKEND_URL}/api`;
+        const MCP_API = `${BACKEND_URL}/mcp/api/v1`;
+        
+        let currentTab = 'mcp-tools';
+        let streaming = false;
+        let tools = [];
+        let selectedTool = null;
+
+        // Initialize the interface with optimized loading
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Show loading indicator
+            showLoadingIndicator();
+            
+            // Load critical data first (tools)
+            await loadTools();
+            
+            // Load secondary data with minimal delays
+            setTimeout(() => loadContext(), 50);
+            setTimeout(() => loadFiles(), 100);
+            setTimeout(() => loadServerStatus(), 150);
+            setTimeout(() => loadMonitoring(), 200);
+            
+            // Hide loading indicator quickly
+            setTimeout(() => hideLoadingIndicator(), 300);
+        });
+
+        // Loading indicator functions
+        function showLoadingIndicator() {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'global-loading';
+            loadingDiv.innerHTML = `
+                <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                    <div style="text-align: center;">
+                        <div style="width: 50px; height: 50px; border: 4px solid #8b5cf6; border-top: 4px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+                        <h3 style="color: #8b5cf6; font-weight: bold;">Loading MCP Server...</h3>
+                        <p style="color: #6b7280;">Initializing tools and data</p>
+                    </div>
+                </div>
+                <style>
+                    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+                </style>
+            `;
+            document.body.appendChild(loadingDiv);
+        }
+        
+        function hideLoadingIndicator() {
+            const loadingDiv = document.getElementById('global-loading');
+            if (loadingDiv) {
+                loadingDiv.remove();
+            }
+        }
+
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('[id^="tab-"]').forEach(tab => {
+                tab.classList.remove('bg-white', 'text-indigo-600', 'shadow-sm');
+                tab.classList.add('text-gray-600', 'hover:text-gray-800');
+            });
+            
+            // Show selected content
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+            
+            // Add active class to selected tab
+            const activeTab = document.getElementById(`tab-${tabName}`);
+            activeTab.classList.add('bg-white', 'text-indigo-600', 'shadow-sm');
+            activeTab.classList.remove('text-gray-600', 'hover:text-gray-800');
+            
+            currentTab = tabName;
+        }
+
+        // Load MCP Tools
+        async function loadTools() {
+            try {
+                // Use fetch with timeout for faster loading
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+                
+                const response = await fetch(`${API}/tools`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                tools = data.tools || [];
+                displayTools();
+                
+            } catch (error) {
+                console.error('Error loading tools:', error);
+                // Show fallback tools immediately
+                tools = getFallbackTools();
+                displayTools();
+            }
+        }
+        
+        // Fallback tools if API fails
+        function getFallbackTools() {
+            return [
+                {
+                    name: "read_file_tool",
+                    description: "Read contents of a file",
+                    parameters: {
+                        type: "object",
+                        properties: {
+                            file_path: {
+                                type: "string",
+                                description: "Path to the file to read"
+                            }
+                        },
+                        required: ["file_path"]
+                    }
+                },
+                {
+                    name: "write_file_tool", 
+                    description: "Write content to a file",
+                    parameters: {
+                        type: "object",
+                        properties: {
+                            file_path: {
+                                type: "string",
+                                description: "Path to the file to write"
+                            },
+                            content: {
+                                type: "string", 
+                                description: "Content to write to the file"
+                            }
+                        },
+                        required: ["file_path", "content"]
+                    }
+                },
+                {
+                    name: "list_directory_tool",
+                    description: "List files in a directory",
+                    parameters: {
+                        type: "object",
+                        properties: {
+                            directory_path: {
+                                type: "string",
+                                description: "Path to the directory to list"
+                            }
+                        },
+                        required: ["directory_path"]
+                    }
+                },
+                {
+                    name: "search_files_tool",
+                    description: "Search for files by name pattern",
+                    parameters: {
+                        type: "object",
+                        properties: {
+                            search_pattern: {
+                                type: "string",
+                                description: "Pattern to search for in file names"
+                            },
+                            directory_path: {
+                                type: "string",
+                                description: "Directory to search in"
+                            }
+                        },
+                        required: ["search_pattern"]
+                    }
+                },
+                {
+                    name: "meta_minds_analysis",
+                    description: "Run META-MINDS AI analysis on datasets",
+                    parameters: {
+                        type: "object",
+                        properties: {
+                            dataset_path: {
+                                type: "string",
+                                description: "Path to the dataset file"
+                            },
+                            business_context: {
+                                type: "string",
+                                description: "Business context template"
+                            },
+                            analysis_focus: {
+                                type: "string", 
+                                description: "Focus area for analysis"
+                            },
+                            target_audience: {
+                                type: "string",
+                                description: "Target audience for questions"
+                            },
+                            num_questions: {
+                                type: "integer",
+                                description: "Number of individual questions (5-30)"
+                            },
+                            num_cross_questions: {
+                                type: "integer",
+                                description: "Number of cross-dataset questions (0-20)"
+                            }
+                        },
+                        required: ["dataset_path"]
+                    }
+                }
+            ];
+        }
+
+        function displayTools() {
+            const toolsList = document.getElementById('tools-list');
+            if (tools.length === 0) {
+                toolsList.innerHTML = '<p class="text-gray-500 text-center py-8">No tools available</p>';
+                return;
+            }
+
+            toolsList.innerHTML = tools.map(tool => `
+                <button onclick="selectTool('${tool.name}')" class="w-full text-left px-4 py-4 rounded-xl transition-all duration-200 bg-gray-50 hover:bg-gray-100 text-gray-800 hover:shadow-md">
+                    <div class="font-semibold text-sm mb-1">${tool.name}</div>
+                    <div class="text-xs text-gray-600">${tool.description}</div>
+                </button>
+            `).join('');
+        }
+
+        function selectTool(toolName) {
+            selectedTool = tools.find(tool => tool.name === toolName);
+            
+            // Update active tool styling
+            document.querySelectorAll('#tools-list button').forEach(btn => {
+                btn.classList.remove('bg-gradient-to-r', 'from-indigo-500', 'to-purple-600', 'text-white', 'shadow-lg', 'transform', 'scale-105');
+                btn.classList.add('bg-gray-50', 'hover:bg-gray-100', 'text-gray-800');
+            });
+            
+            event.target.closest('button').classList.remove('bg-gray-50', 'hover:bg-gray-100', 'text-gray-800');
+            event.target.closest('button').classList.add('bg-gradient-to-r', 'from-indigo-500', 'to-purple-600', 'text-white', 'shadow-lg', 'transform', 'scale-105');
+            
+            // Show tool execution panel
+            const toolPanel = document.querySelector('.lg\\:col-span-2');
+            toolPanel.innerHTML = `
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+                    <div class="bg-gradient-to-r from-purple-500 to-indigo-600 px-6 py-4">
+                        <h2 class="text-xl font-bold text-white">${selectedTool.name}</h2>
+                        <p class="text-purple-100 text-sm mt-1">${selectedTool.description}</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-5 mb-6" id="tool-parameters"></div>
+                        <button onclick="executeMCPTool()" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-indigo-600 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>Execute Tool</span>
+                        </button>
+                        <div id="tool-result" class="mt-6"></div>
+                    </div>
+                </div>
+            `;
+            
+            // Generate parameter inputs
+            const paramsContainer = document.getElementById('tool-parameters');
+            if (selectedTool.parameters && Object.keys(selectedTool.parameters).length > 0) {
+                paramsContainer.innerHTML = Object.entries(selectedTool.parameters).map(([paramName, paramInfo]) => `
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-700">
+                            ${paramName.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                            ${paramInfo.required ? '<span class="text-red-500 ml-1">*</span>' : ''}
+                        </label>
+                        ${paramName === 'content' ? `
+                            <textarea id="param-${paramName}" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" rows="6" placeholder="${paramInfo.description}"></textarea>
+                        ` : `
+                            <input type="text" id="param-${paramName}" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" placeholder="${paramInfo.description}">
+                        `}
+                        <p class="text-xs text-gray-500">${paramInfo.description}</p>
+                    </div>
+                `).join('');
+            } else {
+                paramsContainer.innerHTML = '<p class="text-gray-600">No parameters required</p>';
+            }
+        }
+
+        async function executeMCPTool() {
+            if (!selectedTool) return;
+
+            // Collect parameter values
+            const params = {};
+            if (selectedTool.parameters) {
+                Object.keys(selectedTool.parameters).forEach(paramName => {
+                    const input = document.getElementById(`param-${paramName}`);
+                    if (input && input.value) {
+                        params[paramName] = input.value;
+                    }
+                });
+            }
+
+            const resultDiv = document.getElementById('tool-result');
+            resultDiv.innerHTML = `
+                <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                    <div class="flex items-center gap-2">
+                        <div class="animate-spin w-5 h-5 border-3 border-blue-500 border-t-transparent rounded-full"></div>
+                        <span class="text-blue-700 font-medium">Executing ${selectedTool.name}...</span>
+                    </div>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`${API}/execute`, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        tool_name: selectedTool.name,
+                        arguments: params
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    let displayResult = data.result;
+                    let isJson = false;
+                    
+                    if (typeof data.result === 'object') {
+                        displayResult = JSON.stringify(data.result, null, 2);
+                        isJson = true;
+                    }
+
+                    resultDiv.innerHTML = `
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                            <div class="flex items-center gap-2 mb-4">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <h3 class="text-lg font-semibold text-gray-800">Success!</h3>
+                            </div>
+                            <pre class="bg-white rounded-lg p-4 overflow-x-auto text-sm border border-green-200"><code class="${isJson ? 'text-gray-800' : 'text-gray-700'}">${displayResult}</code></pre>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+                            <div class="flex items-start gap-3">
+                                <svg class="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <div>
+                                    <h4 class="font-semibold text-red-800">Error</h4>
+                                    <p class="text-red-700 text-sm mt-1">${data.error || 'Tool execution failed'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Execution error:', error);
+                resultDiv.innerHTML = `
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+                        <div class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-red-800">Error</h4>
+                                <p class="text-red-700 text-sm mt-1">${error.message}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Load Context (Optimized)
+        async function loadContext() {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 2000);
+                
+                const response = await fetch(`${MCP_API}/context`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                const data = await response.json();
+                document.getElementById('context-display').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('Error loading context:', error);
+                document.getElementById('context-display').textContent = 'Context loading... (offline mode)';
+            }
+        }
+
+        // Load Files
+        async function loadFiles() {
+            try {
+                const response = await fetch(`${MCP_API}/files`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                const files = data.files || [];
+                const filesList = document.getElementById('files-list');
+                
+                if (files.length === 0) {
+                    filesList.innerHTML = '<p class="text-gray-500 text-center">No files uploaded</p>';
+                } else {
+                    filesList.innerHTML = files.map(file => `
+                        <div class="flex items-center justify-between bg-white p-3 rounded-lg border border-gray-200 mb-2 hover:border-indigo-300 transition-all">
+                            <div class="flex items-center gap-2">
+                                <span class="text-2xl">${getFileIcon(file.name || file.filename)}</span>
+                                <div>
+                                    <span class="text-sm font-medium text-gray-800 block">${file.name || file.filename || 'Unknown file'}</span>
+                                    <span class="text-xs text-gray-500">${file.size ? formatFileSize(file.size) : ''}</span>
+                                </div>
+                            </div>
+                            <button onclick="deleteFile('${file.id || file.file_id}')" class="text-red-500 hover:text-red-700 text-sm font-medium px-3 py-1 rounded hover:bg-red-50 transition-colors">Delete</button>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading files:', error);
+                document.getElementById('files-list').innerHTML = '<p class="text-gray-500 text-center">Files loading... (offline mode)</p>';
+            }
+        }
+
+        // Load Server Status
+        async function loadServerStatus() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/health`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const status = await response.json();
+                
+                document.getElementById('server-status').innerHTML = `
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            <h3 class="font-semibold text-green-800">Status</h3>
+                        </div>
+                        <p class="text-green-700 font-bold text-lg">${status.status}</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+                        <div class="flex items-center gap-3 mb-2">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <h3 class="font-semibold text-blue-800">Uptime</h3>
+                        </div>
+                        <p class="text-blue-700 font-bold text-lg">${Math.round(status.uptime)}s</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
+                        <div class="flex items-center gap-3 mb-2">
+                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 0h10m-9 0a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2M9 4a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <h3 class="font-semibold text-purple-800">Version</h3>
+                        </div>
+                        <p class="text-purple-700 font-bold text-lg">${status.version}</p>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading server status:', error);
+                document.getElementById('server-status').innerHTML = '<p class="text-red-500 text-center py-8">Failed to load server status - CORS issue</p>';
+            }
+        }
+
+        // Load Monitoring
+        async function loadMonitoring() {
+            try {
+                const response = await fetch(`${MCP_API}/monitoring/health`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const monitoring = await response.json();
+                
+                document.getElementById('system-metrics').innerHTML = `
+                    <div class="bg-gradient-to-br from-red-50 to-orange-50 rounded-xl p-4 border border-red-200">
+                        <div class="flex items-center gap-3 mb-2">
+                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            <h3 class="font-semibold text-red-800">CPU Usage</h3>
+                        </div>
+                        <p class="text-red-700 font-bold text-lg">${monitoring.checks?.system?.cpu?.usage_percent?.toFixed(1) || 'N/A'}%</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-4 border border-blue-200">
+                        <div class="flex items-center gap-3 mb-2">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                            </svg>
+                            <h3 class="font-semibold text-blue-800">Memory</h3>
+                        </div>
+                        <p class="text-blue-700 font-bold text-lg">${monitoring.checks?.system?.memory?.usage_percent?.toFixed(1) || 'N/A'}%</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-50 to-teal-50 rounded-xl p-4 border border-green-200">
+                        <div class="flex items-center gap-3 mb-2">
+                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                            </svg>
+                            <h3 class="font-semibold text-green-800">Disk Usage</h3>
+                        </div>
+                        <p class="text-green-700 font-bold text-lg">${monitoring.checks?.system?.disk?.usage_percent?.toFixed(1) || 'N/A'}%</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
+                        <div class="flex items-center gap-3 mb-2">
+                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            <h3 class="font-semibold text-purple-800">Environment</h3>
+                        </div>
+                        <p class="text-purple-700 font-bold text-lg">${monitoring.environment || 'N/A'}</p>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading monitoring:', error);
+                document.getElementById('system-metrics').innerHTML = '<p class="text-red-500 text-center py-8">Failed to load system metrics - CORS issue</p>';
+            }
+        }
+
+        // Context operations
+        function addContextItem() {
+            alert('Add Context Item functionality would be implemented here');
+        }
+
+        function updateContext() {
+            alert('Update Context functionality would be implemented here');
+        }
+
+        function clearContext() {
+            if (confirm('Are you sure you want to clear all context?')) {
+                alert('Clear Context functionality would be implemented here');
+            }
+        }
+
+        // Streaming functions
+        function toggleStreaming() {
+            streaming = !streaming;
+            const button = document.getElementById('stream-button');
+            const indicator = document.getElementById('stream-indicator');
+            const status = document.getElementById('stream-status');
+            
+            if (streaming) {
+                button.textContent = 'Stop Streaming';
+                button.className = 'w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors';
+                indicator.className = 'w-3 h-3 rounded-full bg-green-500';
+                status.textContent = 'Streaming Active';
+            } else {
+                button.textContent = 'Start Streaming';
+                button.className = 'w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors';
+                indicator.className = 'w-3 h-3 rounded-full bg-gray-400';
+                status.textContent = 'Streaming Inactive';
+            }
+        }
+
+        // File upload functions
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('drop-zone').classList.add('border-indigo-500', 'bg-indigo-50');
+        }
+
+        function handleDragLeave(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('drop-zone').classList.remove('border-indigo-500', 'bg-indigo-50');
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('drop-zone').classList.remove('border-indigo-500', 'bg-indigo-50');
+            
+            const files = event.dataTransfer.files;
+            uploadFiles(files);
+        }
+
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            uploadFiles(files);
+        }
+
+        async function uploadFiles(files) {
+            if (files.length === 0) return;
+
+            const uploadProgress = document.getElementById('upload-progress');
+            uploadProgress.classList.remove('hidden');
+
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+
+            try {
+                const response = await fetch(`${MCP_API}/files/upload`, {
+                    method: 'POST',
+                    mode: 'cors',
+                    body: formData
+                });
+
+                const data = await response.json();
+                
+                uploadProgress.classList.add('hidden');
+                
+                if (response.ok) {
+                    alert(`✅ Successfully uploaded ${files.length} file(s)!`);
+                    loadFiles(); // Refresh file list
+                } else {
+                    alert(`❌ Upload failed: ${data.detail || 'Unknown error'}`);
+                }
+            } catch (error) {
+                uploadProgress.classList.add('hidden');
+                console.error('Upload error:', error);
+                alert(`❌ Upload failed: ${error.message}`);
+            }
+
+            // Reset file input
+            document.getElementById('file-input').value = '';
+        }
+
+        async function deleteFile(fileId) {
+            if (!confirm('Are you sure you want to delete this file?')) return;
+
+            try {
+                const response = await fetch(`${MCP_API}/files/${fileId}`, {
+                    method: 'DELETE',
+                    mode: 'cors'
+                });
+
+                if (response.ok) {
+                    alert('✅ File deleted successfully!');
+                    loadFiles(); // Refresh file list
+                } else {
+                    alert('❌ Failed to delete file');
+                }
+            } catch (error) {
+                console.error('Delete error:', error);
+                alert(`❌ Delete failed: ${error.message}`);
+            }
+        }
+
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const icons = {
+                'jpg': '🖼️', 'jpeg': '🖼️', 'png': '🖼️',
+                'json': '📋', 'py': '🐍', 'md': '📝',
+                'txt': '📄', 'csv': '📊', 'xlsx': '📊'
+            };
+            return icons[ext] || '📄';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        // Automation Functions
+        function showAutomation(automationType) {
+            // Hide automation grid
+            document.querySelector('.grid.md\\:grid-cols-2.lg\\:grid-cols-3').style.display = 'none';
+            
+            // Show automation panel
+            const panel = document.getElementById('automation-panel');
+            panel.classList.remove('hidden');
+            
+            if (automationType === 'meta-minds') {
+                // Show META-MINDS configuration
+                document.getElementById('meta-minds-config').classList.remove('hidden');
+                
+                panel.innerHTML = `
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl shadow-lg p-6 text-white mb-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="text-4xl">🧠</span>
+                                <div>
+                                    <h3 class="text-2xl font-bold">META-MINDS Data Analytics</h3>
+                                    <p class="text-purple-100">SMART Question Generation with 97%+ Quality Scores</p>
+                                </div>
+                            </div>
+                            <button onclick="closeAutomation()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors">
+                                ← Back to Automations
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else if (automationType === 'project-strategist') {
+                panel.innerHTML = `
+                    <div class="bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl shadow-lg p-6 text-white mb-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="text-4xl">📋</span>
+                                <div>
+                                    <h3 class="text-2xl font-bold">PROJECT STRATEGIST</h3>
+                                    <p class="text-orange-100">Scope of work, project proposals, pace strategy and planning documents</p>
+                                </div>
+                            </div>
+                            <button onclick="closeAutomation()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors">
+                                ← Back to Automations
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                        <h4 class="text-lg font-bold text-gray-800 mb-4">Project Strategy Tools</h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-orange-800 mb-2">📋 Scope of Work Generator</h5>
+                                <p class="text-sm text-orange-700">Generate comprehensive project scope documents</p>
+                            </div>
+                            <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-orange-800 mb-2">📄 Project Proposal Builder</h5>
+                                <p class="text-sm text-orange-700">Create detailed project proposals and plans</p>
+                            </div>
+                            <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-orange-800 mb-2">⚡ Pace Strategy Planner</h5>
+                                <p class="text-sm text-orange-700">Develop project timeline and pace strategies</p>
+                            </div>
+                            <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-orange-800 mb-2">📊 Resource Planning</h5>
+                                <p class="text-sm text-orange-700">Plan and allocate project resources</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (automationType === 'sample-selector') {
+                panel.innerHTML = `
+                    <div class="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl shadow-lg p-6 text-white mb-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="text-4xl">🎯</span>
+                                <div>
+                                    <h3 class="text-2xl font-bold">SAMPLE SELECTOR</h3>
+                                    <p class="text-cyan-100">Intelligent sample selection for statistical analysis and research</p>
+                                </div>
+                            </div>
+                            <button onclick="closeAutomation()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors">
+                                ← Back to Automations
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                        <h4 class="text-lg font-bold text-gray-800 mb-4">Sample Selection Tools</h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-cyan-50 border border-cyan-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-cyan-800 mb-2">🎯 Random Sampling</h5>
+                                <p class="text-sm text-cyan-700">Generate random samples from datasets</p>
+                            </div>
+                            <div class="bg-cyan-50 border border-cyan-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-cyan-800 mb-2">📊 Stratified Sampling</h5>
+                                <p class="text-sm text-cyan-700">Create stratified samples by categories</p>
+                            </div>
+                            <div class="bg-cyan-50 border border-cyan-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-cyan-800 mb-2">⚖️ Systematic Sampling</h5>
+                                <p class="text-sm text-cyan-700">Generate systematic samples with intervals</p>
+                            </div>
+                            <div class="bg-cyan-50 border border-cyan-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-cyan-800 mb-2">🔍 Cluster Sampling</h5>
+                                <p class="text-sm text-cyan-700">Create cluster-based samples</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (automationType === 'data-quality-validator') {
+                panel.innerHTML = `
+                    <div class="bg-gradient-to-r from-red-500 to-pink-600 rounded-2xl shadow-lg p-6 text-white mb-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="text-4xl">🔍</span>
+                                <div>
+                                    <h3 class="text-2xl font-bold">DATA QUALITY VALIDATOR</h3>
+                                    <p class="text-red-100">Comprehensive dataset quality checking and validation</p>
+                                </div>
+                            </div>
+                            <button onclick="closeAutomation()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors">
+                                ← Back to Automations
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                        <h4 class="text-lg font-bold text-gray-800 mb-4">Data Quality Tools</h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-red-800 mb-2">🔍 Completeness Check</h5>
+                                <p class="text-sm text-red-700">Check for missing values and data gaps</p>
+                            </div>
+                            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-red-800 mb-2">✅ Accuracy Validation</h5>
+                                <p class="text-sm text-red-700">Validate data accuracy and consistency</p>
+                            </div>
+                            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-red-800 mb-2">🔄 Consistency Check</h5>
+                                <p class="text-sm text-red-700">Check data format and type consistency</p>
+                            </div>
+                            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-red-800 mb-2">📊 Quality Report</h5>
+                                <p class="text-sm text-red-700">Generate comprehensive quality reports</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (automationType === 'surface-explorer') {
+                panel.innerHTML = `
+                    <div class="bg-gradient-to-r from-teal-500 to-green-600 rounded-2xl shadow-lg p-6 text-white mb-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="text-4xl">🔬</span>
+                                <div>
+                                    <h3 class="text-2xl font-bold">SURFACE EXPLORER</h3>
+                                    <p class="text-teal-100">Basic data exploration and preliminary analysis tools</p>
+                                </div>
+                            </div>
+                            <button onclick="closeAutomation()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors">
+                                ← Back to Automations
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                        <h4 class="text-lg font-bold text-gray-800 mb-4">Data Exploration Tools</h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-teal-50 border border-teal-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-teal-800 mb-2">📊 Basic Statistics</h5>
+                                <p class="text-sm text-teal-700">Generate descriptive statistics and summaries</p>
+                            </div>
+                            <div class="bg-teal-50 border border-teal-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-teal-800 mb-2">📈 Data Visualization</h5>
+                                <p class="text-sm text-teal-700">Create charts, graphs, and visualizations</p>
+                            </div>
+                            <div class="bg-teal-50 border border-teal-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-teal-800 mb-2">🔍 Pattern Detection</h5>
+                                <p class="text-sm text-teal-700">Identify patterns and trends in data</p>
+                            </div>
+                            <div class="bg-teal-50 border border-teal-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-teal-800 mb-2">📋 Data Profiling</h5>
+                                <p class="text-sm text-teal-700">Generate comprehensive data profiles</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (automationType === 'central-orchestrator') {
+                panel.innerHTML = `
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl shadow-lg p-6 text-white mb-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="text-4xl">🎼</span>
+                                <div>
+                                    <h3 class="text-2xl font-bold">CENTRAL ORCHESTRATOR</h3>
+                                    <p class="text-indigo-100">Centralized workflow orchestration and task management</p>
+                                </div>
+                            </div>
+                            <button onclick="closeAutomation()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors">
+                                ← Back to Automations
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                        <h4 class="text-lg font-bold text-gray-800 mb-4">Orchestration Tools</h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-indigo-800 mb-2">🎼 Workflow Orchestration</h5>
+                                <p class="text-sm text-indigo-700">Coordinate complex multi-step workflows</p>
+                            </div>
+                            <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-indigo-800 mb-2">⚡ Task Management</h5>
+                                <p class="text-sm text-indigo-700">Manage and track automation tasks</p>
+                            </div>
+                            <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-indigo-800 mb-2">🔄 Process Monitoring</h5>
+                                <p class="text-sm text-indigo-700">Monitor workflow execution and performance</p>
+                            </div>
+                            <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-indigo-800 mb-2">📊 Resource Allocation</h5>
+                                <p class="text-sm text-indigo-700">Optimize resource usage across workflows</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (automationType === 'workflow-engine') {
+                panel.innerHTML = `
+                    <div class="bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl shadow-lg p-6 text-white mb-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="text-4xl">⚡</span>
+                                <div>
+                                    <h3 class="text-2xl font-bold">WORKFLOW ENGINE</h3>
+                                    <p class="text-green-100">Advanced workflow automation and process management</p>
+                                </div>
+                            </div>
+                            <button onclick="closeAutomation()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors">
+                                ← Back to Automations
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                        <h4 class="text-lg font-bold text-gray-800 mb-4">Workflow Engine Tools</h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-green-800 mb-2">⚡ Process Automation</h5>
+                                <p class="text-sm text-green-700">Automate complex business processes</p>
+                            </div>
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-green-800 mb-2">🔧 Workflow Builder</h5>
+                                <p class="text-sm text-green-700">Create custom automation workflows</p>
+                            </div>
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-green-800 mb-2">📊 Performance Analytics</h5>
+                                <p class="text-sm text-green-700">Analyze workflow performance and efficiency</p>
+                            </div>
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-green-800 mb-2">🔄 Integration Hub</h5>
+                                <p class="text-sm text-green-700">Integrate with external systems and APIs</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (automationType === 'shared-knowledge-base') {
+                panel.innerHTML = `
+                    <div class="bg-gradient-to-r from-yellow-500 to-orange-600 rounded-2xl shadow-lg p-6 text-white mb-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="text-4xl">📚</span>
+                                <div>
+                                    <h3 class="text-2xl font-bold">SHARED KNOWLEDGE BASE</h3>
+                                    <p class="text-yellow-100">Centralized knowledge repository and information management</p>
+                                </div>
+                            </div>
+                            <button onclick="closeAutomation()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors">
+                                ← Back to Automations
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                        <h4 class="text-lg font-bold text-gray-800 mb-4">Knowledge Management Tools</h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-yellow-800 mb-2">📚 Knowledge Repository</h5>
+                                <p class="text-sm text-yellow-700">Store and organize knowledge assets</p>
+                            </div>
+                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-yellow-800 mb-2">🔍 Search & Retrieval</h5>
+                                <p class="text-sm text-yellow-700">Advanced search and knowledge retrieval</p>
+                            </div>
+                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-yellow-800 mb-2">🤝 Collaboration Tools</h5>
+                                <p class="text-sm text-yellow-700">Enable team knowledge sharing</p>
+                            </div>
+                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-yellow-800 mb-2">📊 Analytics & Insights</h5>
+                                <p class="text-sm text-yellow-700">Analyze knowledge usage and patterns</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (automationType === 'human-intervention-system') {
+                panel.innerHTML = `
+                    <div class="bg-gradient-to-r from-pink-500 to-rose-600 rounded-2xl shadow-lg p-6 text-white mb-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="text-4xl">👥</span>
+                                <div>
+                                    <h3 class="text-2xl font-bold">HUMAN INTERVENTION SYSTEM</h3>
+                                    <p class="text-pink-100">Human-in-the-loop automation and decision support</p>
+                                </div>
+                            </div>
+                            <button onclick="closeAutomation()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors">
+                                ← Back to Automations
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                        <h4 class="text-lg font-bold text-gray-800 mb-4">Human-AI Collaboration Tools</h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-pink-800 mb-2">👥 Human-in-the-Loop</h5>
+                                <p class="text-sm text-pink-700">Integrate human decision-making in automation</p>
+                            </div>
+                            <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-pink-800 mb-2">🤝 Collaboration Interface</h5>
+                                <p class="text-sm text-pink-700">Enable seamless human-AI collaboration</p>
+                            </div>
+                            <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-pink-800 mb-2">⚡ Decision Support</h5>
+                                <p class="text-sm text-pink-700">Provide AI-powered decision recommendations</p>
+                            </div>
+                            <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
+                                <h5 class="font-semibold text-pink-800 mb-2">📊 Feedback Loop</h5>
+                                <p class="text-sm text-pink-700">Learn from human feedback and improve</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Show coming soon message for other automations
+                panel.innerHTML = `
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-12 text-center">
+                        <div class="inline-block bg-yellow-100 p-6 rounded-full mb-4">
+                            <span class="text-5xl">🚧</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Coming Soon!</h3>
+                        <p class="text-gray-600 mb-4">This automation is under development</p>
+                        <button onclick="closeAutomation()" class="bg-indigo-500 text-white px-6 py-2 rounded-lg hover:bg-indigo-600 transition-colors">
+                            ← Back to Automations
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function closeAutomation() {
+            // Show automation grid
+            document.querySelector('.grid.md\\:grid-cols-2.lg\\:grid-cols-3').style.display = 'grid';
+            
+            // Hide automation panel
+            document.getElementById('automation-panel').classList.add('hidden');
+            document.getElementById('meta-minds-config').classList.add('hidden');
+        }
+
+        // META-MINDS Analytics Functions
+        let selectedDatasets = [];
+
+        function handleAnalyticsFileSelect(event) {
+            const files = event.target.files;
+            if (files.length === 0) return;
+
+            selectedDatasets = Array.from(files);
+            const container = document.getElementById('selected-datasets');
+            
+            container.innerHTML = selectedDatasets.map((file, index) => `
+                <div class="flex items-center justify-between bg-indigo-50 p-3 rounded-lg border border-indigo-200">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">${getFileIcon(file.name)}</span>
+                        <div>
+                            <span class="font-medium text-indigo-700 block text-sm">${file.name}</span>
+                            <span class="text-xs text-gray-500">${formatFileSize(file.size)}</span>
+                        </div>
+                    </div>
+                    <button onclick="removeDataset(${index})" class="text-red-500 hover:text-red-700 text-sm">✕</button>
+                </div>
+            `).join('');
+
+            // Update info text
+            if (files.length > 1) {
+                container.innerHTML += `
+                    <div class="text-xs text-purple-600 font-medium mt-2">
+                        📊 ${files.length} datasets selected (cross-dataset analysis will be performed)
+                    </div>
+                `;
+            }
+        }
+
+        function removeDataset(index) {
+            selectedDatasets.splice(index, 1);
+            // Trigger display update
+            const dataTransfer = new DataTransfer();
+            selectedDatasets.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('analytics-file-input').files = dataTransfer.files;
+            
+            const event = new Event('change');
+            document.getElementById('analytics-file-input').dispatchEvent(event);
+        }
+
+        // Dynamic dataset selection function
+        function updateDatasetSelection() {
+            const numDatasets = parseInt(document.getElementById('num-datasets').value);
+            const container = document.getElementById('dataset-selection-grid');
+            
+            // Clear existing content
+            container.innerHTML = '';
+            
+            // Generate dataset selection for each dataset
+            for (let i = 1; i <= numDatasets; i++) {
+                const datasetDiv = document.createElement('div');
+                datasetDiv.className = 'bg-gray-50 rounded-lg p-4 border border-gray-200';
+                datasetDiv.innerHTML = `
+                    <h4 class="font-semibold text-gray-800 mb-3">Dataset ${i}</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Upload Dataset ${i}</label>
+                            <div class="border-2 border-dashed border-indigo-300 rounded-lg p-4 text-center cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-all"
+                                 onclick="document.getElementById('dataset-${i}-input').click()">
+                                <input type="file" id="dataset-${i}-input" class="hidden" accept=".csv,.xlsx,.json,.txt" onchange="handleDatasetFileSelect(event, ${i})">
+                                <svg class="w-8 h-8 text-indigo-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                                <p class="text-indigo-600 font-semibold text-sm">Click to select dataset ${i}</p>
+                                <p class="text-xs text-gray-500 mt-1">CSV, XLSX, JSON, TXT</p>
+                            </div>
+                            <div id="selected-dataset-${i}" class="mt-2"></div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Or Select Uploaded File</label>
+                            <select id="dataset-${i}-select" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-sm">
+                                <option value="">-- Select from uploaded files --</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(datasetDiv);
+            }
+            
+            // Update cross-dataset questions visibility
+            const crossQuestionsDiv = document.getElementById('num-cross-questions').closest('div');
+            if (numDatasets > 1) {
+                crossQuestionsDiv.style.display = 'block';
+                document.getElementById('num-cross-questions').disabled = false;
+            } else {
+                crossQuestionsDiv.style.display = 'none';
+                document.getElementById('num-cross-questions').value = 0;
+                document.getElementById('num-cross-questions').disabled = true;
+            }
+        }
+
+        // Handle individual dataset file selection
+        function handleDatasetFileSelect(event, datasetNumber) {
+            const file = event.target.files[0];
+            if (file) {
+                const selectedDiv = document.getElementById(`selected-dataset-${datasetNumber}`);
+                selectedDiv.innerHTML = `
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="text-green-800 font-medium">${file.name}</span>
+                        <span class="text-green-600 text-sm">(${(file.size / 1024).toFixed(1)} KB)</span>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize dataset selection on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDatasetSelection();
+        });
+
+        async function runMetaMindsAnalysis() {
+            // Validate dataset selection
+            const numDatasets = parseInt(document.getElementById('num-datasets').value);
+            let selectedFiles = [];
+            
+            // Collect selected files from all dataset inputs
+            for (let i = 1; i <= numDatasets; i++) {
+                const fileInput = document.getElementById(`dataset-${i}-input`);
+                const selectInput = document.getElementById(`dataset-${i}-select`);
+                
+                if (fileInput.files.length > 0) {
+                    selectedFiles.push(fileInput.files[0]);
+                } else if (selectInput.value) {
+                    // Handle selected from dropdown (you'll need to implement this)
+                    selectedFiles.push(selectInput.value);
+                }
+            }
+            
+            if (selectedFiles.length === 0) {
+                alert('❌ Please select at least one dataset file!');
+                return;
+            }
+            
+            if (selectedFiles.length !== numDatasets) {
+                alert(`❌ Please select exactly ${numDatasets} dataset(s). You selected ${selectedFiles.length}.`);
+                return;
+            }
+
+            // Collect all inputs
+            const projectTitle = document.getElementById('project-title').value;
+            const industryContext = document.getElementById('industry-context').value;
+            const analysisObjectives = document.getElementById('analysis-objectives').value;
+            const datasetDescription = document.getElementById('dataset-description').value;
+            const timePeriod = document.getElementById('time-period').value;
+            const keyVariables = document.getElementById('key-variables').value;
+            const stakeholderMessage = document.getElementById('stakeholder-message').value;
+            
+            const businessContext = document.getElementById('business-context').value;
+            const analysisFocus = document.getElementById('analysis-focus').value;
+            const targetAudience = document.getElementById('target-audience').value;
+            const numQuestions = parseInt(document.getElementById('num-questions').value);
+            const numCrossQuestions = parseInt(document.getElementById('num-cross-questions').value);
+
+            // Build comprehensive context
+            const fullContext = {
+                business_background: {
+                    project_title: projectTitle,
+                    industry: industryContext,
+                    objectives: analysisObjectives
+                },
+                dataset_background: {
+                    description: datasetDescription,
+                    time_period: timePeriod,
+                    key_variables: keyVariables
+                },
+                stakeholder_instructions: stakeholderMessage,
+                analysis_config: {
+                    business_context: businessContext,
+                    analysis_focus: analysisFocus,
+                    target_audience: targetAudience,
+                    num_questions: numQuestions,
+                    num_cross_questions: numCrossQuestions,
+                    total_datasets: numDatasets
+                }
+            };
+
+            const resultsDiv = document.getElementById('analytics-results');
+            resultsDiv.classList.remove('hidden');
+            resultsDiv.innerHTML = `
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 text-center">
+                    <div class="animate-spin w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">🧠 Running META-MINDS Analysis...</h3>
+                    <p class="text-gray-600">Generating SMART analytical questions with AI</p>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`${API}/execute`, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        tool_name: 'meta_minds_analysis',
+                        arguments: {
+                            dataset_path: selectedFiles[0].name, // Use first selected file for now
+                            business_context: businessContext,
+                            analysis_focus: analysisFocus,
+                            target_audience: targetAudience,
+                            num_questions: numQuestions,
+                            num_cross_questions: numCrossQuestions,
+                            total_datasets: numDatasets
+                        }
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayAnalysisResults(data.result);
+                } else {
+                    resultsDiv.innerHTML = `
+                        <div class="bg-red-50 border border-red-200 rounded-xl p-6">
+                            <h3 class="text-xl font-bold text-red-800 mb-2">❌ Analysis Failed</h3>
+                            <p class="text-red-700">${data.error || 'Unknown error'}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Analysis error:', error);
+                resultsDiv.innerHTML = `
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-6">
+                        <h3 class="text-xl font-bold text-red-800 mb-2">❌ Analysis Failed</h3>
+                        <p class="text-red-700">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function displayAnalysisResults(result) {
+            const resultsDiv = document.getElementById('analytics-results');
+            
+            const quality = result.quality_assessment;
+            const questions = result.generated_questions || [];
+            
+            let html = `
+                <!-- Quality Assessment -->
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl shadow-lg border border-green-200 p-6">
+                    <h3 class="text-2xl font-bold text-green-800 mb-4 flex items-center gap-2">
+                        <span>✅</span> Quality Assessment
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="bg-white rounded-lg p-4 border border-green-300">
+                            <p class="text-sm text-gray-600 mb-1">Average SMART Score</p>
+                            <p class="text-3xl font-bold text-green-600">${(quality.average_smart_score * 100).toFixed(1)}%</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 border border-green-300">
+                            <p class="text-sm text-gray-600 mb-1">High Quality Questions</p>
+                            <p class="text-3xl font-bold text-green-600">${quality.high_quality_questions}</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 border border-green-300">
+                            <p class="text-sm text-gray-600 mb-1">Status</p>
+                            <p class="text-lg font-bold text-green-600">${quality.quality_status}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Info -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">📋 Analysis Information</h3>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm">
+                        <div class="bg-gray-50 p-3 rounded"><strong>Dataset:</strong> ${result.dataset_info.filename}</div>
+                        <div class="bg-gray-50 p-3 rounded"><strong>Business Context:</strong> ${result.analysis_context.business_context}</div>
+                        <div class="bg-gray-50 p-3 rounded"><strong>Analysis Focus:</strong> ${result.analysis_context.analysis_focus}</div>
+                        <div class="bg-gray-50 p-3 rounded"><strong>Target Audience:</strong> ${result.analysis_context.target_audience}</div>
+                        <div class="bg-blue-50 p-3 rounded border border-blue-200"><strong>📊 Individual Questions:</strong> ${result.analysis_context.num_questions || 15}</div>
+                        <div class="bg-purple-50 p-3 rounded border border-purple-200"><strong>🔗 Cross-Dataset Questions:</strong> ${result.analysis_context.num_cross_questions || 0}</div>
+                    </div>
+                </div>
+
+                <!-- Generated Questions -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">🔍 Generated SMART Questions</h3>
+                    <div class="space-y-4">
+            `;
+
+            let currentCategory = '';
+            questions.forEach((q, index) => {
+                if (q.category !== currentCategory) {
+                    currentCategory = q.category;
+                    html += `<h4 class="text-lg font-bold text-indigo-700 mt-4 mb-2">${q.category}</h4>`;
+                }
+                
+                const scoreColor = q.smart_score >= 0.97 ? 'green' : q.smart_score >= 0.95 ? 'blue' : 'yellow';
+                
+                html += `
+                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:border-indigo-300 transition-all">
+                        <div class="flex justify-between items-start gap-4">
+                            <p class="text-gray-800 flex-1"><strong>Q${index + 1}:</strong> ${q.question}</p>
+                            <span class="bg-${scoreColor}-100 text-${scoreColor}-700 px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
+                                ${(q.smart_score * 100).toFixed(0)}%
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                </div>
+
+                <!-- Insights & Recommendations -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 rounded-2xl border border-blue-200 p-6">
+                        <h3 class="text-xl font-bold text-blue-800 mb-4">💡 Key Insights</h3>
+                        <ul class="space-y-2">
+                            ${result.insights ? result.insights.map(insight => `<li class="text-gray-700 text-sm">• ${insight}</li>`).join('') : '<li class="text-gray-600">Insights available in full analysis</li>'}
+                        </ul>
+                    </div>
+                    <div class="bg-purple-50 rounded-2xl border border-purple-200 p-6">
+                        <h3 class="text-xl font-bold text-purple-800 mb-4">📝 Recommendations</h3>
+                        <ul class="space-y-2">
+                            ${result.recommendations ? result.recommendations.map(rec => `<li class="text-gray-700 text-sm">${rec}</li>`).join('') : '<li class="text-gray-600">Recommendations available in full analysis</li>'}
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Export Options -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">📤 Export Options</h3>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <button onclick="exportAnalysis('json')" class="bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
+                            <span>📋</span> Export JSON
+                        </button>
+                        <button onclick="exportAnalysis('txt')" class="bg-green-500 text-white py-3 px-4 rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center gap-2">
+                            <span>📄</span> Export Report
+                        </button>
+                        <button onclick="exportAnalysis('copy')" class="bg-purple-500 text-white py-3 px-4 rounded-lg hover:bg-purple-600 transition-colors flex items-center justify-center gap-2">
+                            <span>📋</span> Copy to Clipboard
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            resultsDiv.innerHTML = html;
+            
+            // Store analysis for export
+            window.currentAnalysis = result;
+        }
+
+        function exportAnalysis(format) {
+            if (!window.currentAnalysis) {
+                alert('❌ No analysis to export!');
+                return;
+            }
+
+            if (format === 'json') {
+                const blob = new Blob([JSON.stringify(window.currentAnalysis, null, 2)], { type: 'application/json' });
+                downloadBlob(blob, `meta_minds_analysis_${window.currentAnalysis.analysis_id}.json`);
+            } else if (format === 'txt') {
+                const report = generateTextReport(window.currentAnalysis);
+                const blob = new Blob([report], { type: 'text/plain' });
+                downloadBlob(blob, `meta_minds_report_${window.currentAnalysis.analysis_id}.txt`);
+            } else if (format === 'copy') {
+                const report = generateTextReport(window.currentAnalysis);
+                navigator.clipboard.writeText(report).then(() => {
+                    alert('✅ Analysis copied to clipboard!');
+                });
+            }
+        }
+
+        function generateTextReport(analysis) {
+            let report = `
+═══════════════════════════════════════════════════════════════
+       META-MINDS ANALYTICAL REPORT
+═══════════════════════════════════════════════════════════════
+
+Analysis ID: ${analysis.analysis_id}
+Generated: ${new Date(analysis.timestamp).toLocaleString()}
+Dataset: ${analysis.dataset_info.filename}
+Business Context: ${analysis.analysis_context.business_context}
+Analysis Focus: ${analysis.analysis_context.analysis_focus}
+Target Audience: ${analysis.analysis_context.target_audience}
+
+───────────────────────────────────────────────────────────────
+📊 QUALITY ASSESSMENT
+───────────────────────────────────────────────────────────────
+
+Average SMART Score: ${(analysis.quality_assessment.average_smart_score * 100).toFixed(1)}%
+High Quality Questions: ${analysis.quality_assessment.high_quality_questions}
+Status: ${analysis.quality_assessment.quality_status}
+
+───────────────────────────────────────────────────────────────
+🔍 GENERATED SMART QUESTIONS (${analysis.total_questions} questions)
+───────────────────────────────────────────────────────────────
+
+`;
+
+            let currentCategory = '';
+            analysis.generated_questions.forEach((q, index) => {
+                if (q.category !== currentCategory) {
+                    currentCategory = q.category;
+                    report += `\n${q.category}\n`;
+                }
+                report += `Q${index + 1}. ${q.question}\n    Score: ${(q.smart_score * 100).toFixed(0)}% | Relevance: ${q.relevance}\n\n`;
+            });
+
+            report += `
+═══════════════════════════════════════════════════════════════
+            `;
+
+            return report;
+        }
+
+        function downloadBlob(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

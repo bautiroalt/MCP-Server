@@ -173,119 +173,119 @@ function App() {
   };
 
   const renderMCPTools = () => (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Tools List */}
-      <div className="lg:col-span-1">
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-          <div className="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-              </svg>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Tools List */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+              <div className="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  </svg>
               MCP Tools
-            </h2>
+                </h2>
+              </div>
+              <div className="p-4 space-y-2">
+                {tools.length === 0 ? (
+                  <p className="text-gray-500 text-center py-8">Loading tools...</p>
+                ) : (
+                  tools.map((tool) => (
+                    <button
+                      key={tool.name}
+                      onClick={() => handleToolSelect(tool)}
+                      className={`w-full text-left px-4 py-4 rounded-xl transition-all duration-200 ${
+                        selectedTool?.name === tool.name
+                          ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg transform scale-105'
+                          : 'bg-gray-50 hover:bg-gray-100 text-gray-800 hover:shadow-md'
+                      }`}
+                    >
+                      <div className="font-semibold text-sm mb-1">{tool.name}</div>
+                      <div className={`text-xs ${
+                        selectedTool?.name === tool.name ? 'text-indigo-100' : 'text-gray-600'
+                      }`}>
+                        {tool.description}
+                      </div>
+                    </button>
+                  ))
+                )}
+              </div>
+            </div>
           </div>
-          <div className="p-4 space-y-2">
-            {tools.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">Loading tools...</p>
+
+          {/* Tool Execution Panel */}
+          <div className="lg:col-span-2">
+            {!selectedTool ? (
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-12 text-center">
+                <div className="inline-block bg-indigo-100 p-6 rounded-full mb-4">
+                  <svg className="w-16 h-16 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">Select a Tool to Get Started</h3>
+                <p className="text-gray-600">Choose a tool from the left panel to execute MCP operations</p>
+              </div>
             ) : (
-              tools.map((tool) => (
-                <button
-                  key={tool.name}
-                  onClick={() => handleToolSelect(tool)}
-                  className={`w-full text-left px-4 py-4 rounded-xl transition-all duration-200 ${
-                    selectedTool?.name === tool.name
-                      ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg transform scale-105'
-                      : 'bg-gray-50 hover:bg-gray-100 text-gray-800 hover:shadow-md'
-                  }`}
-                >
-                  <div className="font-semibold text-sm mb-1">{tool.name}</div>
-                  <div className={`text-xs ${
-                    selectedTool?.name === tool.name ? 'text-indigo-100' : 'text-gray-600'
-                  }`}>
-                    {tool.description}
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-purple-500 to-indigo-600 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white">{selectedTool.name}</h2>
+                  <p className="text-purple-100 text-sm mt-1">{selectedTool.description}</p>
+                </div>
+
+                <div className="p-6">
+                  {/* Parameters Form */}
+                  <div className="space-y-5 mb-6">
+                    {Object.entries(selectedTool.parameters).map(([paramName, paramInfo]) =>
+                      renderParameterInput(paramName, paramInfo)
+                    )}
                   </div>
-                </button>
-              ))
+
+                  {/* Execute Button */}
+                  <button
+                    onClick={executeTool}
+                    disabled={loading}
+                    className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-indigo-600 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                  >
+                    {loading ? (
+                      <>
+                        <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        <span>Executing...</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Execute Tool</span>
+                      </>
+                    )}
+                  </button>
+
+                  {/* Error Display */}
+                  {error && (
+                    <div className="mt-6 bg-red-50 border border-red-200 rounded-xl p-4">
+                      <div className="flex items-start gap-3">
+                        <svg className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div>
+                          <h4 className="font-semibold text-red-800">Error</h4>
+                          <p className="text-red-700 text-sm mt-1">{error}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Result Display */}
+                  {renderResult()}
+                </div>
+              </div>
             )}
           </div>
         </div>
-      </div>
-
-      {/* Tool Execution Panel */}
-      <div className="lg:col-span-2">
-        {!selectedTool ? (
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-12 text-center">
-            <div className="inline-block bg-indigo-100 p-6 rounded-full mb-4">
-              <svg className="w-16 h-16 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">Select a Tool to Get Started</h3>
-            <p className="text-gray-600">Choose a tool from the left panel to execute MCP operations</p>
-          </div>
-        ) : (
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-            <div className="bg-gradient-to-r from-purple-500 to-indigo-600 px-6 py-4">
-              <h2 className="text-xl font-bold text-white">{selectedTool.name}</h2>
-              <p className="text-purple-100 text-sm mt-1">{selectedTool.description}</p>
-            </div>
-
-            <div className="p-6">
-              {/* Parameters Form */}
-              <div className="space-y-5 mb-6">
-                {Object.entries(selectedTool.parameters).map(([paramName, paramInfo]) =>
-                  renderParameterInput(paramName, paramInfo)
-                )}
-              </div>
-
-              {/* Execute Button */}
-              <button
-                onClick={executeTool}
-                disabled={loading}
-                className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-indigo-600 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <>
-                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    <span>Executing...</span>
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>Execute Tool</span>
-                  </>
-                )}
-              </button>
-
-              {/* Error Display */}
-              {error && (
-                <div className="mt-6 bg-red-50 border border-red-200 rounded-xl p-4">
-                  <div className="flex items-start gap-3">
-                    <svg className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <div>
-                      <h4 className="font-semibold text-red-800">Error</h4>
-                      <p className="text-red-700 text-sm mt-1">{error}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Result Display */}
-              {renderResult()}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
   );
 
   const renderContextManagement = () => (

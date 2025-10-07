@@ -322,7 +322,13 @@ spec:
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the GNU General Public License v3.0.
+
+**Copyright (c) 2024 Jatin Kumar - All Rights Reserved**
+
+This is free software licensed under GPL v3. You can redistribute it and/or modify it under the terms of the GNU GPL v3. Any derivative works must also be licensed under GPL v3.
+
+For the full license text, see the [LICENSE](LICENSE) file or visit https://www.gnu.org/licenses/gpl-3.0.en.html
 
 ## 🆘 Support
 

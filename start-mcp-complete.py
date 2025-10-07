@@ -9,6 +9,7 @@ import sys
 import os
 import time
 import webbrowser
+import requests
 from pathlib import Path
 
 def start_backend():
@@ -16,15 +17,34 @@ def start_backend():
     print("🚀 Starting Backend Server...")
     backend_dir = Path(__file__).parent / "backend"
     
+    # Set environment variables for proper module resolution
+    env = os.environ.copy()
+    env['PYTHONPATH'] = str(backend_dir)
+    
     # Start backend in background
     backend_process = subprocess.Popen(
         [sys.executable, "-m", "uvicorn", "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"],
         cwd=backend_dir,
+        env=env,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE
     )
     
     print("✅ Backend server starting on http://localhost:8000")
+    
+    # Wait for backend to be ready
+    print("⏳ Waiting for backend to initialize...")
+    for i in range(30):  # Wait up to 30 seconds
+        try:
+            response = requests.get("http://localhost:8000/health", timeout=1)
+            if response.status_code == 200:
+                print("✅ Backend server is ready!")
+                break
+        except:
+            time.sleep(1)
+    else:
+        print("⚠️ Backend server may not be ready yet, but continuing...")
+    
     return backend_process
 
 def start_interface():

